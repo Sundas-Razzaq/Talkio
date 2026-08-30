@@ -32,6 +32,22 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
+        profilePicture: {
+            type: String,
+            default: null,
+        },
+
+        bio: {
+            type: String,
+            trim: true,
+            maxlength: 160,
+            default: "",
+        },
+
+        profileSetupCompleted: {
+            type: Boolean,
+            default: false,
+        },
         resetPasswordToken: {
             type: String,
             default: null,
