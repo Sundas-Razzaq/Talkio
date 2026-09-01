@@ -1,2 +1,2 @@
-# Chatly
-Chatly — Real-Time Chat Application
+# Talkio
+Talkio — Real-Time Chat Application
