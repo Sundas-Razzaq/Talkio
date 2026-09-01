@@ -1,12 +1,23 @@
 import express from "express";
-
 import { body } from "express-validator";
 
-import { updateProfile } from "../controllers/userController.js";
+import {
+    getProfile,
+    updateProfile,
+    uploadProfilePicture,
+    deleteProfilePicture,
+} from "../controllers/userController.js";
 
 import authMiddleware from "../middleware/authmiddleware.js";
+import upload from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
+
+router.get(
+    "/profile",
+    authMiddleware,
+    getProfile
+);
 
 router.patch(
     "/profile",
@@ -23,13 +34,21 @@ router.patch(
             .trim()
             .isLength({ max: 160 })
             .withMessage("Bio cannot exceed 160 characters"),
-
-        body("profilePicture")
-            .optional()
-            .isURL()
-            .withMessage("Profile picture must be a valid URL"),
     ],
     updateProfile
+);
+
+router.post(
+    "/profile/picture",
+    authMiddleware,
+    upload.single("profilePicture"),
+    uploadProfilePicture
+);
+
+router.delete(
+    "/profile/picture",
+    authMiddleware,
+    deleteProfilePicture
 );
 
 export default router;
