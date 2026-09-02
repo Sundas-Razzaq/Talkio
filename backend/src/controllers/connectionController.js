@@ -67,3 +67,62 @@ export const getPendingRequests = asyncHandler(async (req, res) => {
         requests,
     });
 });
+
+//Accept request or reject request
+export const respondToFriendRequest = asyncHandler(async (req, res, next) => {
+    const { connectionId } = req.params;
+    const { action } = req.body;
+
+    if (!["accept", "reject"].includes(action)) {
+        return next(new ApiError(400, "Invalid action"));
+    }
+
+    const connection = await Connection.findOne({
+        _id: connectionId,
+        recipient: req.user._id,
+        status: "pending",
+    });
+
+    if (!connection) {
+        return next(new ApiError(404, "Pending friend request not found"));
+    }
+
+    connection.status = action === "accept" ? "accepted" : "rejected";
+
+    await connection.save();
+
+    return res.status(200).json({
+        success: true,
+        message:
+            action === "accept"
+                ? "Friend request accepted successfully"
+                : "Friend request rejected successfully",
+        connection,
+    });
+});
+
+// Get all friends of the logged-in user
+export const getFriends = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
+
+    const connections = await Connection.find({
+        $or: [
+            { requester: userId, status: "accepted" },
+            { recipient: userId, status: "accepted" },
+        ],
+    })
+        .populate("requester", "name email profilePicture bio")
+        .populate("recipient", "name email profilePicture bio")
+        .sort({ updatedAt: -1 });
+
+    const friends = connections.map((connection) => {
+        return connection.requester._id.toString() === userId.toString()
+            ? connection.recipient
+            : connection.requester;
+    });
+
+    return res.status(200).json({
+        success: true,
+        friends,
+    });
+});
