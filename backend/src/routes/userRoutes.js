@@ -6,6 +6,7 @@ import {
     updateProfile,
     uploadProfilePicture,
     deleteProfilePicture,
+    searchUserByEmail,
 } from "../controllers/userController.js";
 
 import authMiddleware from "../middleware/authmiddleware.js";
@@ -49,6 +50,12 @@ router.delete(
     "/profile/picture",
     authMiddleware,
     deleteProfilePicture
+);
+
+router.get(
+    "/search",
+    authMiddleware,
+    searchUserByEmail
 );
 
 export default router;

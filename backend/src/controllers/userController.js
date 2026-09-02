@@ -104,3 +104,29 @@ export const deleteProfilePicture = asyncHandler(async (req, res) => {
         user: user.toJSON(),
     });
 });
+
+// Search user by email 
+export const searchUserByEmail = asyncHandler(async (req, res, next) => {
+    const { email } = req.query;
+
+    if (!email) {
+        return next(new ApiError(400, "Email is required"));
+    }
+
+    const user = await User.findOne({
+        email: email.trim().toLowerCase(),
+    });
+
+    if (!user) {
+        return next(new ApiError(404, "User not found"));
+    }
+
+    if (user._id.toString() === req.user._id.toString()) {
+        return next(new ApiError(400, "You cannot search for yourself"));
+    }
+
+    return res.status(200).json({
+        success: true,
+        user: user.toJSON(),
+    });
+});
