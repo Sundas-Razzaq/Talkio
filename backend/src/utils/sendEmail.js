@@ -15,6 +15,35 @@ export const passwordResetTemplate = ({ name, resetUrl }) => {
   `;
 };
 
+export const invitationTemplate = ({ inviterName }) => {
+    return `
+        <div style="font-family:Arial,sans-serif;line-height:1.6;color:#111827">
+            <h2 style="margin:0 0 16px">You're invited to join Talkio</h2>
+
+            <p style="margin:0 0 16px">
+                Hello,
+            </p>
+
+            <p style="margin:0 0 16px">
+                ${inviterName} has invited you to join Talkio and start chatting.
+            </p>
+
+            <p style="margin:24px 0">
+                <a
+                    href="${process.env.FRONTEND_URL}/register"
+                    style="background:#111827;color:#fff;text-decoration:none;padding:12px 18px;border-radius:8px;display:inline-block"
+                >
+                    Join Talkio
+                </a>
+            </p>
+
+            <p style="margin:0;color:#6b7280;font-size:14px">
+                Create your Talkio account and connect with your friend.
+            </p>
+        </div>
+    `;
+};
+
 const createTransport = () => {
     const host = process.env.EMAIL_HOST || "smtp.gmail.com";
     const port = Number(process.env.EMAIL_PORT || 587);

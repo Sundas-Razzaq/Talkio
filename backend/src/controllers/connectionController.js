@@ -2,6 +2,7 @@ import Connection from "../models/connection.js";
 import User from "../models/user.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/apiError.js";
+import sendEmail, { invitationTemplate } from "../utils/sendEmail.js";
 
 // Send a friend request to existing talkio user
 export const sendFriendRequest = asyncHandler(async (req, res, next) => {
@@ -152,5 +153,42 @@ export const removeFriend = asyncHandler(async (req, res, next) => {
     return res.status(200).json({
         success: true,
         message: "Friend removed successfully",
+    });
+});
+
+// Invite a user by email to join Talkio
+export const inviteUserByEmail = asyncHandler(async (req, res, next) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return next(new ApiError(400, "Email is required"));
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const existingUser = await User.findOne({
+        email: normalizedEmail,
+    });
+
+    if (existingUser) {
+        return next(
+            new ApiError(
+                400,
+                "This email is already registered on Talkio"
+            )
+        );
+    }
+
+    await sendEmail({
+        to: normalizedEmail,
+        subject: "You're invited to join Talkio",
+        html: invitationTemplate({
+            inviterName: req.user.name,
+        }),
+    });
+
+    return res.status(200).json({
+        success: true,
+        message: "Invitation sent successfully",
     });
 });
