@@ -1,5 +1,4 @@
 import streamifier from "streamifier";
-import cloudinary from "../config/cloudinary.js";
 
 // Helper function to ensure config is applied right before API calls
 const ensureCloudinaryConfig = () => {
