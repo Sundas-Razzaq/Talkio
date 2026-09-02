@@ -4,6 +4,7 @@ import {
     getPendingRequests,
     respondToFriendRequest,
     getFriends,
+    removeFriend,
 } from "../controllers/connectionController.js";
 import authMiddleware from "../middleware/authmiddleware.js";
 
@@ -13,5 +14,6 @@ router.post("/request", authMiddleware, sendFriendRequest);
 router.get("/requests", authMiddleware, getPendingRequests);
 router.get("/friends", authMiddleware, getFriends);
 router.patch("/request/:connectionId", authMiddleware, respondToFriendRequest);
+router.delete("/friends/:friendId", authMiddleware, removeFriend);
 
 export default router;

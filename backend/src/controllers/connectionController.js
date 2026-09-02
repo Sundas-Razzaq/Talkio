@@ -126,3 +126,31 @@ export const getFriends = asyncHandler(async (req, res) => {
         friends,
     });
 });
+
+// Remove a friend connection
+export const removeFriend = asyncHandler(async (req, res, next) => {
+    const { friendId } = req.params;
+
+    const connection = await Connection.findOneAndDelete({
+        status: "accepted",
+        $or: [
+            {
+                requester: req.user._id,
+                recipient: friendId,
+            },
+            {
+                requester: friendId,
+                recipient: req.user._id,
+            },
+        ],
+    });
+
+    if (!connection) {
+        return next(new ApiError(404, "Friend connection not found"));
+    }
+
+    return res.status(200).json({
+        success: true,
+        message: "Friend removed successfully",
+    });
+});
