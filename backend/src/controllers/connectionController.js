@@ -3,6 +3,7 @@ import User from "../models/user.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/apiError.js";
 import sendEmail, { invitationTemplate } from "../utils/sendEmail.js";
+import Invitation from "../models/invitation.js";
 
 // Send a friend request to existing talkio user
 export const sendFriendRequest = asyncHandler(async (req, res, next) => {
@@ -172,12 +173,26 @@ export const inviteUserByEmail = asyncHandler(async (req, res, next) => {
 
     if (existingUser) {
         return next(
-            new ApiError(
-                400,
-                "This email is already registered on Talkio"
-            )
+            new ApiError(400, "This email is already registered on Talkio")
         );
     }
+
+    const existingInvitation = await Invitation.findOne({
+        inviter: req.user._id,
+        email: normalizedEmail,
+        status: "pending",
+    });
+
+    if (existingInvitation) {
+        return next(
+            new ApiError(400, "An invitation has already been sent to this email")
+        );
+    }
+
+    await Invitation.create({
+        inviter: req.user._id,
+        email: normalizedEmail,
+    });
 
     await sendEmail({
         to: normalizedEmail,

@@ -5,6 +5,8 @@ import generateToken from "../utils/generateTokens.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/apiError.js";
 import sendEmail, { passwordResetTemplate } from "../utils/sendEmail.js";
+import Invitation from "../models/invitation.js";
+import Connection from "../models/connection.js";
 
 const sanitizeUser = (user) => user.toJSON();
 
@@ -20,22 +22,47 @@ const buildAuthResponse = (res, user, statusCode = 200) => {
 
 export const registerUser = asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
         return next(new ApiError(400, errors.array()[0].msg));
     }
 
     const { name, email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const existingUser = await User.findOne({
+        email: normalizedEmail,
+    });
+
     if (existingUser) {
-        return next(new ApiError(409, "User already exists"));
+        return next(new ApiError(400, "User already exists"));
     }
 
     const user = await User.create({
         name,
-        email,
+        email: normalizedEmail,
         password,
     });
+
+    // Check whether this email was invited to Talkio
+    const invitation = await Invitation.findOne({
+        email: user.email,
+        status: "pending",
+    }).sort({ createdAt: -1 });
+
+    if (invitation) {
+        // Create a pending friend request from the inviter
+        await Connection.create({
+            requester: invitation.inviter,
+            recipient: user._id,
+            status: "pending",
+        });
+
+        // Mark the invitation as used
+        invitation.status = "accepted";
+        await invitation.save();
+    }
 
     return buildAuthResponse(res, user, 201);
 });
