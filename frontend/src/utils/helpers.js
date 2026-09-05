@@ -1,5 +1,5 @@
-const AUTH_TOKEN_KEY = "taskmanager_auth_token";
-const AUTH_USER_KEY = "taskmanager_auth_user";
+const AUTH_TOKEN_KEY = "talkio_auth_token";
+const AUTH_USER_KEY = "talkio_auth_user";
 
 export const getStoredToken = () => {
     return window.localStorage.getItem(AUTH_TOKEN_KEY);
@@ -34,5 +34,9 @@ export const isAuthenticated = () => {
 };
 
 export const resolveErrorMessage = (error) => {
-    return error?.response?.data?.message || error?.message || "Something went wrong";
+    return (
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong"
+    );
 };

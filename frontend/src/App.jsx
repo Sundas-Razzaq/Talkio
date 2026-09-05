@@ -5,7 +5,7 @@ import ForgotPasswordPage from "./pages/forgotpass.jsx";
 import PasswordResetPage from "./pages/passreset.jsx";
 import DashboardPage from "./pages/dashboard.jsx";
 import ProtectedRoute from "./routes/protectedRoute.jsx";
-import { getStoredToken } from "./utils/helpers.jsx";
+import { getStoredToken } from "./utils/helpers.js";
 
 const defaultRoute = getStoredToken() ? "/dashboard" : "/login";
 

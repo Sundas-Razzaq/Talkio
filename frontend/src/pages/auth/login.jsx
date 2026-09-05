@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../../api/authAPI.js";
-import { resolveErrorMessage, setAuthSession } from "../../utils/helpers.jsx";
+import { loginUser } from "../../api/authApi.js";
+import { resolveErrorMessage, setAuthSession } from "../../utils/helpers.js";
 
 const initialForm = {
     email: "",
