@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/login.jsx";
-import RegisterPage from "./pages/register.jsx";
-import ForgotPasswordPage from "./pages/forgotpass.jsx";
-import PasswordResetPage from "./pages/passreset.jsx";
-import DashboardPage from "./pages/dashboard.jsx";
+import LoginPage from "./pages/auth/login.jsx";
+import RegisterPage from "./pages/auth/register.jsx";
+import ForgotPasswordPage from "./pages/auth/forgotpass.jsx";
+import PasswordResetPage from "./pages/auth/passreset.jsx";
+import DashboardPage from "./pages/dashboard/DashboardPage.jsx";
 import ProtectedRoute from "./routes/protectedRoute.jsx";
 import { getStoredToken } from "./utils/helpers.js";
 import AppRoutes from "./routes/AppRoutes.jsx";

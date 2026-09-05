@@ -2,17 +2,17 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import LandingPage from "../pages/landing/LandingPage.jsx";
 
-import LoginPage from "../pages/auth/LoginPage.jsx";
-import RegisterPage from "../pages/auth/RegisterPage.jsx";
-import ForgotPasswordPage from "../pages/auth/ForgotPasswordPage.jsx";
-import ResetPasswordPage from "../pages/auth/ResetPasswordPage.jsx";
+import LoginPage from "../pages/auth/login.jsx";
+import RegisterPage from "../pages/auth/register.jsx";
+import ForgotPasswordPage from "../pages/auth/forgotpass.jsx";
+import PasswordResetPage from "../pages/auth/passreset.jsx";
 
 import ProfileSetupPage from "../pages/profile/ProfileSetupPage.jsx";
 
 import DashboardPage from "../pages/dashboard/DashboardPage.jsx";
 
 import ProtectedRoute from "./protectedRoute.jsx";
-import PublicRoute from "./PublicRoute.jsx";
+import PublicRoute from "./PublicRoutes.jsx";
 
 function AppRoutes() {
     return (
@@ -30,7 +30,7 @@ function AppRoutes() {
                 />
                 <Route
                     path="/reset-password/:token"
-                    element={<ResetPasswordPage />}
+                    element={<PasswordResetPage />}
                 />
             </Route>
 
