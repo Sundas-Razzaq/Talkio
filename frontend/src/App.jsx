@@ -6,6 +6,7 @@ import PasswordResetPage from "./pages/passreset.jsx";
 import DashboardPage from "./pages/dashboard.jsx";
 import ProtectedRoute from "./routes/protectedRoute.jsx";
 import { getStoredToken } from "./utils/helpers.js";
+import AppRoutes from "./routes/AppRoutes.jsx";
 
 const defaultRoute = getStoredToken() ? "/dashboard" : "/login";
 
@@ -17,12 +18,11 @@ function App() {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password/:token" element={<PasswordResetPage />} />
-
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashboardPage />} />
       </Route>
-
       <Route path="*" element={<Navigate to={defaultRoute} replace />} />
+      <AppRoutes />
     </Routes>
   );
 }
