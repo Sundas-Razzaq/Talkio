@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { resetPassword } from "../api/authAPI.js";
-import { resolveErrorMessage, setAuthSession } from "../utils/helpers.jsx";
+import { resetPassword } from "../../api/authAPI.js";
+import { resolveErrorMessage, setAuthSession } from "../../utils/helpers.jsx";
 
 const PasswordResetPage = () => {
     const { token } = useParams();

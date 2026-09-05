@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser, logoutUser } from "../api/authAPI.js";
-import { clearAuthSession, resolveErrorMessage } from "../utils/helpers.jsx";
+import { getCurrentUser, logoutUser } from "../../api/authAPI.js";
+import { clearAuthSession, resolveErrorMessage } from "../../utils/helpers.jsx";
 
 const DashboardPage = () => {
     const navigate = useNavigate();
