@@ -5,7 +5,7 @@ import authRoutes from "./src/routes/authroutes.js";
 import { errorHandler, notFound } from "./src/middleware/errormiddleware.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import connectionRoutes from "./src/routes/connectionRoutes.js";
-
+import conversationRoutes from "./src/routes/conversationRoutes.js";
 const app = express();
 
 // Middleware
@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/connections", connectionRoutes);
-
+app.use("/api/conversations", conversationRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
