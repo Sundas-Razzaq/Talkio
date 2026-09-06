@@ -1,28 +1,43 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+
+import LandingPage from "./pages/landing/LandingPage.jsx";
+
 import LoginPage from "./pages/auth/login.jsx";
 import RegisterPage from "./pages/auth/register.jsx";
 import ForgotPasswordPage from "./pages/auth/forgotpass.jsx";
-import PasswordResetPage from "./pages/auth/passreset.jsx";
-import DashboardPage from "./pages/dashboard/DashboardPage.jsx";
-import ProtectedRoute from "./routes/protectedRoute.jsx";
-import { getStoredToken } from "./utils/helpers.js";
-import AppRoutes from "./routes/AppRoutes.jsx";
+import ResetPasswordPage from "./pages/auth/passreset.jsx";
 
-const defaultRoute = getStoredToken() ? "/dashboard" : "/login";
+import ProfileSetupPage from "./pages/profile/ProfileSetupPage.jsx";
+import DashboardPage from "./pages/dashboard/DashboardPage.jsx";
+
+import ProtectedRoute from "./routes/protectedRoute.jsx";
+import PublicRoute from "./routes/PublicRoutes.jsx";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to={defaultRoute} replace />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/reset-password/:token" element={<PasswordResetPage />} />
+      {/* Landing */}
+      <Route path="/" element={<LandingPage />} />
+
+      {/* Public pages */}
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route
+          path="/reset-password/:token"
+          element={<ResetPasswordPage />}
+        />
+      </Route>
+
+      {/* Protected pages */}
       <Route element={<ProtectedRoute />}>
+        <Route path="/profile/setup" element={<ProfileSetupPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
       </Route>
-      <Route path="*" element={<Navigate to={defaultRoute} replace />} />
-      <AppRoutes />
+
+      {/* Unknown route */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

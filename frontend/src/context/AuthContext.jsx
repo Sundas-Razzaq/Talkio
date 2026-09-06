@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import {
     getCurrentUser,
     loginUser,
@@ -7,7 +6,6 @@ import {
     registerUser,
 } from "../api/authApi.js";
 import { AuthContext } from "./authContext.js";
-
 import {
     clearAuthSession,
     getStoredToken,
@@ -55,6 +53,7 @@ export function AuthProvider({ children }) {
                     setUser(null);
                     setLoading(false);
                 }
+
                 return;
             }
 
@@ -63,6 +62,7 @@ export function AuthProvider({ children }) {
 
                 if (!cancelled) {
                     setUser(data.user);
+
                     setAuthSession({
                         token,
                         user: data.user,
