@@ -8,9 +8,9 @@ export const sendFriendRequest = (recipientId) =>
 export const getFriendRequests = () =>
     api.get("/connections/requests");
 
-export const respondToFriendRequest = (connectionId, status) =>
+export const respondToFriendRequest = (connectionId, action) =>
     api.patch(`/connections/request/${connectionId}`, {
-        status,
+        action,
     });
 
 export const getFriends = () =>
