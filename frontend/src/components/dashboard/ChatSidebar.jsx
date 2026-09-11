@@ -1,19 +1,68 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import { useAuth } from "../../hooks/useAuth.js";
 import { searchUserByEmail } from "../../api/userApi.js";
+import {
+    getFriends,
+    getFriendRequests,
+    sendFriendRequest,
+    respondToFriendRequest,
+} from "../../api/connectionApi.js";
+
 import UserSearch from "../friends/UserSearch.jsx";
+import SidebarTabs from "../friends/SideBarTabs.jsx";
+import FriendsList from "../friends/FriendList.jsx";
+import RequestsList from "../friends/FriendRequestList.jsx";
 
 const ChatSidebar = () => {
     const { user } = useAuth();
 
+    // Sidebar mode
+    const [activeTab, setActiveTab] = useState("chats");
+
+    // Search state
     const [query, setQuery] = useState("");
     const [searchStatus, setSearchStatus] = useState("idle");
     const [searchUser, setSearchUser] = useState(null);
     const [searchError, setSearchError] = useState("");
     const [searchedEmail, setSearchedEmail] = useState("");
 
+    // Connections state
+    const [friends, setFriends] = useState([]);
+    const [friendsLoading, setFriendsLoading] = useState(true);
+    const [requests, setRequests] = useState([]);
+    const [requestsLoading, setRequestsLoading] = useState(true);
+    const [respondingId, setRespondingId] = useState(null);
+
     const isSearching = searchStatus !== "idle" || query.trim() !== "";
+
+    const refreshConnections = useCallback(async () => {
+        setFriendsLoading(true);
+        setRequestsLoading(true);
+
+        try {
+            const [friendsRes, requestsRes] = await Promise.all([
+                getFriends(),
+                getFriendRequests(),
+            ]);
+
+            setFriends(friendsRes.data.friends || []);
+            setRequests(requestsRes.data.requests || []);
+        } catch (error) {
+            const message =
+                error?.response?.data?.message ||
+                "Could not load your connections";
+            toast.error(message);
+        } finally {
+            setFriendsLoading(false);
+            setRequestsLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        queueMicrotask(refreshConnections);
+    }, [refreshConnections]);
 
     const resetSearch = () => {
         setQuery("");
@@ -58,13 +107,72 @@ const ChatSidebar = () => {
         }
     };
 
+    const friendshipStatus = (() => {
+        if (!searchUser) return "none";
+
+        if (friends.some((f) => f._id === searchUser._id)) {
+            return "friends";
+        }
+
+        if (
+            requests.some(
+                (r) => r.requester?._id === searchUser._id
+            )
+        ) {
+            return "incoming";
+        }
+
+        return "none";
+    })();
+
+    const handleSendRequest = async (recipientId) => {
+        await sendFriendRequest(recipientId);
+        // No visible list change yet; the backend guards duplicates.
+    };
+
+    const handleAcceptFromSearch = async (requesterId) => {
+        const match = requests.find(
+            (r) => r.requester?._id === requesterId
+        );
+
+        if (!match) {
+            throw new Error("Request not found");
+        }
+
+        await respondToFriendRequest(match._id, "accept");
+        await refreshConnections();
+    };
+
+    const handleRespond = async (connectionId, action) => {
+        try {
+            setRespondingId(connectionId);
+            await respondToFriendRequest(connectionId, action);
+            toast.success(
+                action === "accept"
+                    ? "Friend request accepted"
+                    : "Friend request rejected"
+            );
+            await refreshConnections();
+        } catch (error) {
+            const message =
+                error?.response?.data?.message ||
+                "Could not update request";
+            toast.error(message);
+        } finally {
+            setRespondingId(null);
+        }
+    };
+
+    const handleSelectFriend = (friend) => {
+        // Phase 4 will start/open the conversation here.
+        toast.info(`Conversation with ${friend.name} comes in Phase 4`);
+    };
+
     return (
         <aside className="chat-sidebar">
             <header className="chat-sidebar__header">
                 <div className="chat-sidebar__brand">
-                    <h1 className="chat-sidebar__brand-name">
-                        Talkio
-                    </h1>
+                    <h1 className="chat-sidebar__brand-name">Talkio</h1>
                 </div>
 
                 <button
@@ -111,8 +219,26 @@ const ChatSidebar = () => {
                 </form>
             </div>
 
+            {!isSearching && (
+                <SidebarTabs
+                    activeTab={activeTab}
+                    onChange={setActiveTab}
+                    requestCount={requests.length}
+                />
+            )}
+
             <section className="chat-sidebar__conversations">
-                {searchStatus === "idle" ? (
+                {isSearching ? (
+                    <UserSearch
+                        status={searchStatus}
+                        user={searchUser}
+                        errorMessage={searchError}
+                        searchedEmail={searchedEmail}
+                        friendshipStatus={friendshipStatus}
+                        onSendRequest={handleSendRequest}
+                        onAcceptRequest={handleAcceptFromSearch}
+                    />
+                ) : activeTab === "chats" ? (
                     <>
                         <header className="chat-sidebar__section-header">
                             <h2 className="chat-sidebar__section-title">
@@ -135,12 +261,18 @@ const ChatSidebar = () => {
                             </p>
                         </div>
                     </>
+                ) : activeTab === "friends" ? (
+                    <FriendsList
+                        friends={friends}
+                        loading={friendsLoading}
+                        onSelectFriend={handleSelectFriend}
+                    />
                 ) : (
-                    <UserSearch
-                        status={searchStatus}
-                        user={searchUser}
-                        errorMessage={searchError}
-                        searchedEmail={searchedEmail}
+                    <RequestsList
+                        requests={requests}
+                        loading={requestsLoading}
+                        onRespond={handleRespond}
+                        respondingId={respondingId}
                     />
                 )}
             </section>
