@@ -1,17 +1,65 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const MAX_LENGTH = 5000;
+const TYPING_DEBOUNCE_MS = 1500;
 
-const MessageComposer = ({ onSend, disabled }) => {
+const MessageComposer = ({
+    onSend,
+    onTypingStart,
+    onTypingStop,
+    disabled,
+    sending,
+}) => {
     const [value, setValue] = useState("");
     const textareaRef = useRef(null);
+    const typingTimeoutRef = useRef(null);
+    const isTypingRef = useRef(false);
 
     const trimmed = value.trim();
-    const canSend = !disabled && trimmed.length > 0;
+    const canSend = !disabled && !sending && trimmed.length > 0;
+
+    const stopTyping = () => {
+        if (typingTimeoutRef.current) {
+            clearTimeout(typingTimeoutRef.current);
+            typingTimeoutRef.current = null;
+        }
+
+        if (isTypingRef.current) {
+            isTypingRef.current = false;
+            onTypingStop?.();
+        }
+    };
+
+    useEffect(() => {
+        return () => {
+            stopTyping();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const handleChange = (event) => {
+        setValue(event.target.value);
+
+        if (disabled) return;
+
+        if (!isTypingRef.current) {
+            isTypingRef.current = true;
+            onTypingStart?.();
+        }
+
+        if (typingTimeoutRef.current) {
+            clearTimeout(typingTimeoutRef.current);
+        }
+
+        typingTimeoutRef.current = setTimeout(() => {
+            stopTyping();
+        }, TYPING_DEBOUNCE_MS);
+    };
 
     const handleSubmit = () => {
         if (!canSend) return;
 
+        stopTyping();
         onSend(trimmed);
         setValue("");
 
@@ -43,7 +91,8 @@ const MessageComposer = ({ onSend, disabled }) => {
                 rows={1}
                 maxLength={MAX_LENGTH}
                 value={value}
-                onChange={(event) => setValue(event.target.value)}
+                onChange={handleChange}
+                onBlur={stopTyping}
                 onKeyDown={handleKeyDown}
                 disabled={disabled}
             />
@@ -54,7 +103,7 @@ const MessageComposer = ({ onSend, disabled }) => {
                 aria-label="Send message"
                 disabled={!canSend}
             >
-                Send
+                {sending ? "Sending…" : "Send"}
             </button>
         </form>
     );

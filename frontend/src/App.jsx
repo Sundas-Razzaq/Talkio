@@ -13,32 +13,36 @@ import DashboardPage from "./pages/dashboard/DashboardPage.jsx";
 import ProtectedRoute from "./routes/protectedRoute.jsx";
 import PublicRoute from "./routes/PublicRoutes.jsx";
 
+import { SocketProvider } from "./context/SocketContext.jsx";
+
 function App() {
   return (
-    <Routes>
-      {/* Landing */}
-      <Route path="/" element={<LandingPage />} />
+    <SocketProvider>
+      <Routes>
+        {/* Landing */}
+        <Route path="/" element={<LandingPage />} />
 
-      {/* Public pages */}
-      <Route element={<PublicRoute />}>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route
-          path="/reset-password/:token"
-          element={<ResetPasswordPage />}
-        />
-      </Route>
+        {/* Public pages */}
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route
+            path="/reset-password/:token"
+            element={<ResetPasswordPage />}
+          />
+        </Route>
 
-      {/* Protected pages */}
-      <Route element={<ProtectedRoute />}>
-        <Route path="/profile/setup" element={<ProfileSetupPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-      </Route>
+        {/* Protected pages */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/profile/setup" element={<ProfileSetupPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+        </Route>
 
-      {/* Unknown route */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        {/* Unknown route */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </SocketProvider>
   );
 }
 

@@ -1,4 +1,4 @@
-const ChatHeader = ({ user }) => {
+const ChatHeader = ({ user, typing }) => {
     if (!user) return null;
 
     return (
@@ -19,7 +19,14 @@ const ChatHeader = ({ user }) => {
 
             <div className="chat-header__info">
                 <p className="chat-header__name">{user.name}</p>
-                <p className="chat-header__status">Available</p>
+
+                {typing ? (
+                    <p className="chat-header__status chat-header__status--typing">
+                        typing…
+                    </p>
+                ) : (
+                    <p className="chat-header__status">Available</p>
+                )}
             </div>
         </header>
     );
