@@ -11,9 +11,6 @@ const socketHandler = (io) => {
     io.use(socketAuth);
 
     io.on("connection", (socket) => {
-        console.log(
-            `Socket connected: ${socket.id} | User: ${socket.user.name}`
-        );
 
         /*
          * JOIN CONVERSATION
@@ -37,10 +34,6 @@ const socketHandler = (io) => {
 
                 socket.join(room);
 
-                console.log(
-                    `User ${socket.user.name} joined conversation ${conversationId}`
-                );
-
                 callback?.({
                     success: true,
                     message: "Joined conversation successfully",
@@ -61,10 +54,6 @@ const socketHandler = (io) => {
             const room = getRoomName(conversationId);
 
             socket.leave(room);
-
-            console.log(
-                `User ${socket.user.name} left conversation ${conversationId}`
-            );
 
             callback?.({
                 success: true,

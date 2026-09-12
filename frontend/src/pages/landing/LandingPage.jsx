@@ -1,8 +1,40 @@
 import { Link } from "react-router-dom";
 import { MessageCircle, Users, Zap } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import logo from "../../assets/logo.png";
+
+const MotionLink = motion(Link);
+
 const LandingPage = () => {
+    const reduceMotion = useReducedMotion();
+
+    const reveal = {
+        hidden: { opacity: 0, y: reduceMotion ? 0 : 14 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: reduceMotion ? 0 : 0.45, ease: "easeOut" },
+        },
+    };
+
+    const stagger = {
+        hidden: {},
+        visible: {
+            transition: {
+                staggerChildren: reduceMotion ? 0 : 0.08,
+            },
+        },
+    };
+
+    const featureCard = {
+        hidden: { opacity: 0, y: reduceMotion ? 0 : 14 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: reduceMotion ? 0 : 0.45, ease: "easeOut" },
+        },
+    };
+
     return (
         <motion.main
             className="landing-page"
@@ -12,8 +44,19 @@ const LandingPage = () => {
         >
             {/* Navigation */}
             <header className="landing-header">
-                <div className="landing-container landing-header__inner">
-                    <Link to="/" className="landing-brand">
+                <motion.div
+                    className="landing-container landing-header__inner"
+                    initial="hidden"
+                    animate="visible"
+                    variants={stagger}
+                >
+                    <MotionLink
+                        to="/"
+                        className="landing-brand"
+                        variants={reveal}
+                        whileHover={reduceMotion ? undefined : { y: -1 }}
+                        whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+                    >
                         <img
                             src={logo}
                             alt=""
@@ -21,21 +64,34 @@ const LandingPage = () => {
                             aria-hidden="true"
                         />
                         <span className="landing-brand__text">Talkio</span>
-                    </Link>
+                    </MotionLink>
 
-                    <nav className="landing-nav" aria-label="Main navigation">
-                        <Link to="/login" className="landing-nav__link">
+                    <motion.nav
+                        className="landing-nav"
+                        aria-label="Main navigation"
+                        variants={stagger}
+                    >
+                        <MotionLink
+                            to="/login"
+                            className="landing-nav__link"
+                            variants={reveal}
+                            whileHover={reduceMotion ? undefined : { y: -1 }}
+                            whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+                        >
                             Login
-                        </Link>
+                        </MotionLink>
 
-                        <Link
+                        <MotionLink
                             to="/register"
                             className="landing-nav__link landing-nav__link--primary"
+                            variants={reveal}
+                            whileHover={reduceMotion ? undefined : { y: -1, scale: 1.02 }}
+                            whileTap={reduceMotion ? undefined : { scale: 0.97 }}
                         >
                             Get Started
-                        </Link>
-                    </nav>
-                </div>
+                        </MotionLink>
+                    </motion.nav>
+                </motion.div>
             </header>
 
             {/* Hero */}
@@ -43,38 +99,42 @@ const LandingPage = () => {
                 <div className="landing-container landing-hero__content">
                     <motion.div
                         className="landing-hero__text"
-                        initial={{ opacity: 0, y: 18 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.45, delay: 0.08, ease: "easeOut" }}
+                        initial="hidden"
+                        animate="visible"
+                        variants={stagger}
                     >
-                        <p className="landing-eyebrow">
+                        <motion.p className="landing-eyebrow" variants={reveal}>
                             Simple. Personal. Real-time.
-                        </p>
+                        </motion.p>
 
-                        <h1 className="landing-hero__title">
+                        <motion.h1 className="landing-hero__title" variants={reveal}>
                             Stay connected with the people who matter.
-                        </h1>
+                        </motion.h1>
 
-                        <p className="landing-hero__description">
+                        <motion.p className="landing-hero__description" variants={reveal}>
                             Talkio gives you a simple place to connect with friends,
                             start private conversations, and chat in real time.
-                        </p>
+                        </motion.p>
 
-                        <div className="landing-hero__actions">
-                            <Link
+                        <motion.div className="landing-hero__actions" variants={reveal}>
+                            <MotionLink
                                 to="/register"
                                 className="landing-button landing-button--primary"
+                                whileHover={reduceMotion ? undefined : { y: -2, scale: 1.02 }}
+                                whileTap={reduceMotion ? undefined : { scale: 0.97 }}
                             >
                                 Create an account
-                            </Link>
+                            </MotionLink>
 
-                            <Link
+                            <MotionLink
                                 to="/login"
                                 className="landing-button landing-button--secondary"
+                                whileHover={reduceMotion ? undefined : { y: -2, scale: 1.02 }}
+                                whileTap={reduceMotion ? undefined : { scale: 0.97 }}
                             >
                                 Login
-                            </Link>
-                        </div>
+                            </MotionLink>
+                        </motion.div>
                     </motion.div>
 
                     <motion.div
@@ -84,7 +144,22 @@ const LandingPage = () => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.18, ease: "easeOut" }}
                     >
-                        <div className="landing-chat-preview">
+                        <motion.div
+                            className="landing-chat-preview"
+                            initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.96 }}
+                            animate={{
+                                opacity: 1,
+                                scale: 1,
+                                y: reduceMotion ? 0 : [0, -5, 0],
+                            }}
+                            transition={{
+                                opacity: { duration: reduceMotion ? 0 : 0.45 },
+                                scale: { duration: reduceMotion ? 0 : 0.5, ease: "easeOut" },
+                                y: reduceMotion
+                                    ? { duration: 0 }
+                                    : { duration: 5, repeat: Infinity, ease: "easeInOut" },
+                            }}
+                        >
                             <div className="landing-chat-preview__header">
                                 <div className="landing-avatar" />
                                 <div>
@@ -98,24 +173,29 @@ const LandingPage = () => {
                                 </div>
                             </div>
 
-                            <div className="landing-chat-preview__messages">
-                                <div className="landing-message landing-message--received">
+                            <motion.div
+                                className="landing-chat-preview__messages"
+                                initial="hidden"
+                                animate="visible"
+                                variants={stagger}
+                            >
+                                <motion.div className="landing-message landing-message--received" variants={reveal}>
                                     Hey! How are you?
-                                </div>
+                                </motion.div>
 
-                                <div className="landing-message landing-message--sent">
+                                <motion.div className="landing-message landing-message--sent" variants={reveal}>
                                     I'm good! What about you?
-                                </div>
+                                </motion.div>
 
-                                <div className="landing-message landing-message--received">
+                                <motion.div className="landing-message landing-message--received" variants={reveal}>
                                     Doing great!
-                                </div>
-                            </div>
+                                </motion.div>
+                            </motion.div>
 
                             <div className="landing-chat-preview__input">
                                 <span>Write a message...</span>
                             </div>
-                        </div>
+                        </motion.div>
                     </motion.div>
                 </div>
             </section>
@@ -148,13 +228,15 @@ const LandingPage = () => {
                     >
                         <motion.article
                             className="landing-feature-card"
-                            variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0 } }}
-                            whileHover={{ y: -4 }}
-                            transition={{ duration: 0.2 }}
+                            variants={featureCard}
+                            whileHover={reduceMotion ? undefined : { y: -4 }}
                         >
-                            <div className="landing-feature-card__icon">
+                            <motion.div
+                                className="landing-feature-card__icon"
+                                whileHover={reduceMotion ? undefined : { rotate: 5, scale: 1.08 }}
+                            >
                                 <MessageCircle size={22} strokeWidth={1.8} />
-                            </div>
+                            </motion.div>
 
                             <h3 className="landing-feature-card__title">
                                 Private conversations
@@ -167,13 +249,15 @@ const LandingPage = () => {
 
                         <motion.article
                             className="landing-feature-card"
-                            variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0 } }}
-                            whileHover={{ y: -4 }}
-                            transition={{ duration: 0.2 }}
+                            variants={featureCard}
+                            whileHover={reduceMotion ? undefined : { y: -4 }}
                         >
-                            <div className="landing-feature-card__icon">
+                            <motion.div
+                                className="landing-feature-card__icon"
+                                whileHover={reduceMotion ? undefined : { rotate: 5, scale: 1.08 }}
+                            >
                                 <Zap size={22} strokeWidth={1.8} />
-                            </div>
+                            </motion.div>
 
                             <h3 className="landing-feature-card__title">
                                 Real-time messaging
@@ -187,13 +271,15 @@ const LandingPage = () => {
 
                         <motion.article
                             className="landing-feature-card"
-                            variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0 } }}
-                            whileHover={{ y: -4 }}
-                            transition={{ duration: 0.2 }}
+                            variants={featureCard}
+                            whileHover={reduceMotion ? undefined : { y: -4 }}
                         >
-                            <div className="landing-feature-card__icon">
+                            <motion.div
+                                className="landing-feature-card__icon"
+                                whileHover={reduceMotion ? undefined : { rotate: 5, scale: 1.08 }}
+                            >
                                 <Users size={22} strokeWidth={1.8} />
-                            </div>
+                            </motion.div>
 
                             <h3 className="landing-feature-card__title">
                                 Stay connected
@@ -209,7 +295,13 @@ const LandingPage = () => {
             </section>
 
             {/* Call to action */}
-            <section className="landing-cta">
+            <motion.section
+                className="landing-cta"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                variants={reveal}
+            >
                 <div className="landing-container landing-cta__content">
                     <div>
                         <p className="landing-eyebrow">
@@ -221,17 +313,25 @@ const LandingPage = () => {
                         </h2>
                     </div>
 
-                    <Link
+                    <MotionLink
                         to="/register"
                         className="landing-button landing-button--primary"
+                        whileHover={reduceMotion ? undefined : { y: -2, scale: 1.02 }}
+                        whileTap={reduceMotion ? undefined : { scale: 0.97 }}
                     >
                         Get Started
-                    </Link>
+                    </MotionLink>
                 </div>
-            </section>
+            </motion.section>
 
             {/* Footer */}
-            <footer className="landing-footer">
+            <motion.footer
+                className="landing-footer"
+                initial={{ opacity: 0, y: reduceMotion ? 0 : 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: reduceMotion ? 0 : 0.45, ease: "easeOut" }}
+            >
                 <div className="landing-container landing-footer__inner">
                     <p className="landing-footer__brand">
                         <img
@@ -247,7 +347,7 @@ const LandingPage = () => {
                         Connect. Talk. Stay close.
                     </p>
                 </div>
-            </footer>
+            </motion.footer>
         </motion.main>
     );
 };
