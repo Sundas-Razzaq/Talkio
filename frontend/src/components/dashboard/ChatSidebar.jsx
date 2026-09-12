@@ -16,7 +16,7 @@ import SidebarTabs from "../friends/SideBarTabs.jsx";
 import FriendsList from "../friends/FriendList.jsx";
 import RequestsList from "../friends/FriendRequestList.jsx";
 import ConversationList from "../conversation/ConversationList.jsx";
-
+import logo from "../../assets/logo.png";
 const ChatSidebar = ({
     conversations,
     conversationsLoading,
@@ -200,6 +200,12 @@ const ChatSidebar = ({
         <aside className="chat-sidebar">
             <header className="chat-sidebar__header">
                 <div className="chat-sidebar__brand">
+                    <img
+                        src={logo}
+                        alt=""
+                        className="chat-sidebar__brand-logo"
+                        aria-hidden="true"
+                    />
                     <h1 className="chat-sidebar__brand-name">Talkio</h1>
                 </div>
 

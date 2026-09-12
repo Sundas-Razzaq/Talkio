@@ -1,0 +1,174 @@
+/* ============================================================
+   Talkio auth pages (Phase 8d)
+   Two-column layout: hero (left) + card (right).
+   ============================================================ */
+
+.auth-page {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    min-height: 100vh;
+    background-color: var(--talkio-bg);
+    color: var(--talkio-text);
+}
+
+/* ---- Left column: hero ---- */
+
+.auth-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--talkio-space-12) var(--talkio-space-10);
+    overflow: hidden;
+    background-color: var(--talkio-surface-1);
+    border-right: 1px solid var(--talkio-border);
+}
+
+.auth-hero__glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    opacity: 0.55;
+}
+
+.auth-hero__glow--one {
+    width: 420px;
+    height: 420px;
+    top: -120px;
+    left: -120px;
+    background: var(--talkio-primary);
+}
+
+.auth-hero__glow--two {
+    width: 360px;
+    height: 360px;
+    bottom: -100px;
+    right: -80px;
+    background: var(--talkio-accent);
+    opacity: 0.35;
+}
+
+.auth-hero__content {
+    position: relative;
+    z-index: 1;
+    max-width: 460px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--talkio-space-4);
+}
+
+.auth-hero__title {
+    font-size: var(--talkio-font-size-3xl);
+    font-weight: var(--talkio-weight-bold);
+    letter-spacing: -0.02em;
+    line-height: var(--talkio-line-tight);
+    color: var(--talkio-text);
+}
+
+.auth-hero__description {
+    font-size: var(--talkio-font-size-md);
+    color: var(--talkio-text-muted);
+    line-height: var(--talkio-line-relaxed);
+}
+
+.auth-hero__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--talkio-space-3);
+    margin-top: var(--talkio-space-2);
+}
+
+.auth-hero__list-item {
+    position: relative;
+    padding-left: var(--talkio-space-6);
+    font-size: var(--talkio-font-size-base);
+    color: var(--talkio-text);
+    line-height: var(--talkio-line-normal);
+}
+
+.auth-hero__list-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--talkio-accent);
+    box-shadow: 0 0 0 4px var(--talkio-accent-soft);
+}
+
+/* ---- Right column: card ---- */
+
+.auth-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--talkio-space-6);
+    padding: var(--talkio-space-12) var(--talkio-space-10);
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.auth-card__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--talkio-space-2);
+}
+
+.auth-card__title {
+    font-size: var(--talkio-font-size-2xl);
+    font-weight: var(--talkio-weight-bold);
+    letter-spacing: -0.01em;
+    line-height: var(--talkio-line-tight);
+    color: var(--talkio-text);
+}
+
+.auth-card__subtitle {
+    font-size: var(--talkio-font-size-base);
+    color: var(--talkio-text-muted);
+    line-height: var(--talkio-line-normal);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--talkio-space-4);
+}
+
+.auth-form__submit {
+    width: 100%;
+    margin-top: var(--talkio-space-2);
+}
+
+.auth-card__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--talkio-space-2) var(--talkio-space-3);
+    font-size: var(--talkio-font-size-sm);
+    color: var(--talkio-text-muted);
+}
+
+.auth-card__footer-text {
+    color: var(--talkio-text-muted);
+}
+
+/* ---- Small screens ---- */
+
+@media (max-width: 900px) {
+    .auth-page {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-hero {
+        display: none;
+    }
+
+    .auth-card {
+        padding: var(--talkio-space-8) var(--talkio-space-5);
+        min-height: 100vh;
+    }
+}

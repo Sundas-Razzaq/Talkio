@@ -1,20 +1,24 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+
+import AuthPageShell from "../../components/auth/authPageShell.jsx";
 import { resetPassword } from "../../api/authApi.js";
-import { resolveErrorMessage, setAuthSession } from "../../utils/helpers.js";
+import {
+    resolveErrorMessage,
+    setAuthSession,
+} from "../../utils/helpers.js";
 
 const PasswordResetPage = () => {
     const { token } = useParams();
     const navigate = useNavigate();
+
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setMessage("");
         setError("");
 
         if (password !== confirmPassword) {
@@ -25,9 +29,15 @@ const PasswordResetPage = () => {
         setLoading(true);
 
         try {
-            const { data } = await resetPassword(token, { password });
-            setAuthSession({ token: data.token, user: data.user });
-            setMessage("Password reset successful");
+            const { data } = await resetPassword(token, {
+                password,
+            });
+
+            setAuthSession({
+                token: data.token,
+                user: data.user,
+            });
+
             navigate("/dashboard");
         } catch (requestError) {
             setError(resolveErrorMessage(requestError));
@@ -37,27 +47,74 @@ const PasswordResetPage = () => {
     };
 
     return (
-        <main>
-            <h1>Reset Password</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="password">New password</label>
-                    <input id="password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
+        <AuthPageShell
+            eyebrow="Reset password"
+            title="Choose a new password"
+            subtitle="Set a new password for your Talkio account."
+            footer={
+                <Link className="auth-link" to="/login">
+                    Back to login
+                </Link>
+            }
+        >
+            <form className="auth-form" onSubmit={handleSubmit}>
+                <div className="form-field">
+                    <label
+                        className="form-field__label"
+                        htmlFor="password"
+                    >
+                        New password
+                    </label>
+
+                    <input
+                        className="form-field__input"
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(event) =>
+                            setPassword(event.target.value)
+                        }
+                        required
+                    />
                 </div>
-                <div>
-                    <label htmlFor="confirmPassword">Confirm password</label>
-                    <input id="confirmPassword" type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} required />
+
+                <div className="form-field">
+                    <label
+                        className="form-field__label"
+                        htmlFor="confirmPassword"
+                    >
+                        Confirm password
+                    </label>
+
+                    <input
+                        className="form-field__input"
+                        id="confirmPassword"
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(event) =>
+                            setConfirmPassword(event.target.value)
+                        }
+                        required
+                    />
                 </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? "Resetting..." : "Reset password"}
+
+                {error ? (
+                    <p className="form-message form-message--error">
+                        {error}
+                    </p>
+                ) : null}
+
+                <button
+                    className="button button--primary auth-form__submit"
+                    type="submit"
+                    disabled={loading}
+                >
+                    {loading
+                        ? "Resetting..."
+                        : "Reset password"}
                 </button>
             </form>
-            {message ? <p>{message}</p> : null}
-            {error ? <p>{error}</p> : null}
-            <p>
-                <Link to="/login">Back to login</Link>
-            </p>
-        </main>
+        </AuthPageShell>
     );
 };
 

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+
+import AuthPageShell from "../../components/auth/authPageShell.jsx";
 import { forgotPassword } from "../../api/authApi.js";
 import { resolveErrorMessage } from "../../utils/helpers.js";
 
@@ -17,7 +19,9 @@ const ForgotPasswordPage = () => {
 
         try {
             const { data } = await forgotPassword({ email });
-            setMessage(data.message || "Password reset email sent");
+            setMessage(
+                data.message || "Password reset email sent"
+            );
         } catch (requestError) {
             setError(resolveErrorMessage(requestError));
         } finally {
@@ -26,23 +30,60 @@ const ForgotPasswordPage = () => {
     };
 
     return (
-        <main>
-            <h1>Forgot Password</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input id="email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
+        <AuthPageShell
+            eyebrow="Forgot password"
+            title="Reset your password"
+            subtitle="Enter your account email and we'll send you a reset link."
+            footer={
+                <Link className="auth-link" to="/login">
+                    Back to login
+                </Link>
+            }
+        >
+            <form className="auth-form" onSubmit={handleSubmit}>
+                <div className="form-field">
+                    <label
+                        className="form-field__label"
+                        htmlFor="email"
+                    >
+                        Email
+                    </label>
+
+                    <input
+                        className="form-field__input"
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(event) =>
+                            setEmail(event.target.value)
+                        }
+                        required
+                    />
                 </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? "Sending..." : "Send reset email"}
+
+                {message ? (
+                    <p className="form-message form-message--success">
+                        {message}
+                    </p>
+                ) : null}
+
+                {error ? (
+                    <p className="form-message form-message--error">
+                        {error}
+                    </p>
+                ) : null}
+
+                <button
+                    className="button button--primary auth-form__submit"
+                    type="submit"
+                    disabled={loading}
+                >
+                    {loading
+                        ? "Sending..."
+                        : "Send reset email"}
                 </button>
             </form>
-            {message ? <p>{message}</p> : null}
-            {error ? <p>{error}</p> : null}
-            <p>
-                <Link to="/login">Back to login</Link>
-            </p>
-        </main>
+        </AuthPageShell>
     );
 };
 

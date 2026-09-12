@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import logo from "../../assets/logo.png";
 const LandingPage = () => {
     return (
         <main className="landing-page">
@@ -7,7 +7,13 @@ const LandingPage = () => {
             <header className="landing-header">
                 <div className="landing-container landing-header__inner">
                     <Link to="/" className="landing-brand">
-                        Talkio
+                        <img
+                            src={logo}
+                            alt=""
+                            className="landing-brand__logo"
+                            aria-hidden="true"
+                        />
+                        <span className="landing-brand__text">Talkio</span>
                     </Link>
 
                     <nav className="landing-nav" aria-label="Main navigation">
@@ -186,7 +192,13 @@ const LandingPage = () => {
             <footer className="landing-footer">
                 <div className="landing-container landing-footer__inner">
                     <p className="landing-footer__brand">
-                        Talkio
+                        <img
+                            src={logo}
+                            alt=""
+                            className="landing-footer__logo"
+                            aria-hidden="true"
+                        />
+                        <span className="landing-footer__text-mark">Talkio</span>
                     </p>
 
                     <p className="landing-footer__text">

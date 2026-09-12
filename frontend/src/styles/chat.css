@@ -1,0 +1,392 @@
+/* ============================================================
+   Talkio chat area (Phase 8c)
+   Header, messages, bubbles, composer, empty states.
+   ============================================================ */
+
+/* ---- Welcome / empty conversation state ---- */
+
+.chat-area__welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--talkio-space-5);
+    text-align: center;
+    padding: var(--talkio-space-12);
+    max-width: 520px;
+}
+
+.chat-area__welcome-icon {
+    width: 96px;
+    height: 96px;
+    border-radius: var(--talkio-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 44px;
+    background: var(--talkio-primary-soft);
+    border: 1px solid rgba(124, 92, 255, 0.25);
+    box-shadow: 0 0 60px rgba(124, 92, 255, 0.15);
+    line-height: 1;
+}
+
+.chat-area__welcome-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--talkio-space-3);
+}
+
+.chat-area__welcome-title {
+    font-size: var(--talkio-font-size-2xl);
+    font-weight: var(--talkio-weight-bold);
+    color: var(--talkio-text);
+    letter-spacing: -0.01em;
+    line-height: var(--talkio-line-tight);
+}
+
+.chat-area__welcome-description {
+    font-size: var(--talkio-font-size-md);
+    color: var(--talkio-text-muted);
+    line-height: var(--talkio-line-relaxed);
+}
+
+/* ============================================================
+   Chat header
+   ============================================================ */
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    gap: var(--talkio-space-3);
+    height: var(--talkio-header-height);
+    padding: 0 var(--talkio-space-5);
+    border-bottom: 1px solid var(--talkio-border);
+    background-color: var(--talkio-surface-1);
+    flex: 0 0 auto;
+}
+
+.chat-header__avatar {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--talkio-radius-full);
+    overflow: hidden;
+    background: var(--talkio-primary-soft);
+    color: var(--talkio-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--talkio-weight-semibold);
+    font-size: var(--talkio-font-size-base);
+    border: 1px solid var(--talkio-border);
+}
+
+.chat-header__avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.chat-header__avatar-placeholder {
+    line-height: 1;
+}
+
+.chat-header__info {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.chat-header__name {
+    font-size: var(--talkio-font-size-md);
+    font-weight: var(--talkio-weight-semibold);
+    color: var(--talkio-text);
+    line-height: var(--talkio-line-tight);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chat-header__status {
+    font-size: var(--talkio-font-size-xs);
+    color: var(--talkio-accent);
+    line-height: var(--talkio-line-tight);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chat-header__status::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--talkio-accent);
+    box-shadow: 0 0 0 3px var(--talkio-accent-soft);
+    flex: 0 0 auto;
+}
+
+.chat-header__status--typing {
+    color: var(--talkio-primary);
+    font-style: italic;
+}
+
+.chat-header__status--typing::before {
+    background-color: var(--talkio-primary);
+    box-shadow: 0 0 0 3px var(--talkio-primary-soft);
+    animation: talkio-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes talkio-pulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.55;
+        transform: scale(0.75);
+    }
+}
+
+/* ============================================================
+   Messages container
+   ============================================================ */
+
+.chat-area__messages {
+    padding: var(--talkio-space-6) var(--talkio-space-6) var(--talkio-space-4);
+}
+
+/* ============================================================
+   Message list
+   ============================================================ */
+
+.message-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--talkio-space-2);
+    padding: 0 var(--talkio-space-2);
+}
+
+.message-list--loading,
+.message-list--error,
+.message-list--empty {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--talkio-space-8) var(--talkio-space-4);
+    text-align: center;
+}
+
+.message-list__message {
+    font-size: var(--talkio-font-size-sm);
+    color: var(--talkio-text-muted);
+}
+
+.message-list__empty {
+    display: flex;
+    flex-direction: column;
+    gap: var(--talkio-space-2);
+    max-width: 420px;
+}
+
+.message-list__empty-title {
+    font-size: var(--talkio-font-size-lg);
+    font-weight: var(--talkio-weight-semibold);
+    color: var(--talkio-text);
+    line-height: var(--talkio-line-tight);
+}
+
+.message-list__empty-description {
+    font-size: var(--talkio-font-size-sm);
+    color: var(--talkio-text-muted);
+    line-height: var(--talkio-line-relaxed);
+}
+
+/* ============================================================
+   Message bubbles
+   ============================================================ */
+
+.message-bubble {
+    position: relative;
+    max-width: 65%;
+    padding: 8px 12px 8px 14px;
+    font-size: var(--talkio-font-size-base);
+    line-height: var(--talkio-line-normal);
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    box-shadow: var(--talkio-shadow-sm);
+    animation: talkio-bubble-in 180ms ease-out;
+}
+
+@keyframes talkio-bubble-in {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-bubble--own {
+    align-self: flex-end;
+    background: var(--talkio-bubble-own-bg);
+    color: var(--talkio-bubble-own-text);
+    border-radius: 16px 16px 4px 16px;
+    box-shadow: 0 4px 14px rgba(124, 92, 255, 0.25);
+}
+
+.message-bubble--other {
+    align-self: flex-start;
+    background: var(--talkio-bubble-other-bg);
+    color: var(--talkio-bubble-other-text);
+    border-radius: 16px 16px 16px 4px;
+    border: 1px solid var(--talkio-border);
+}
+
+.message-bubble__content {
+    font-size: var(--talkio-font-size-base);
+    line-height: var(--talkio-line-normal);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    /* Reserve a small inline area so a floated timestamp doesn't
+       overlap the last word on one-line messages. */
+    padding-right: 4px;
+}
+
+/* The classic chat-app "float the time to the bottom-right of the
+   last line" trick. It works for every content length without
+   needing JS or a fixed minimum bubble width. */
+
+.message-bubble__time {
+    float: right;
+    margin-left: 8px;
+    margin-top: 6px;
+    margin-right: -4px;
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.75);
+    user-select: none;
+    white-space: nowrap;
+}
+
+.message-bubble--other .message-bubble__time {
+    color: var(--talkio-text-dim);
+}
+
+/* Clear the float so it doesn't affect the next sibling or the
+   bubble's own height computation. */
+.message-bubble::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+/* ============================================================
+   Message composer
+   ============================================================ */
+
+.message-composer {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--talkio-space-3);
+    padding: var(--talkio-space-3) var(--talkio-space-6) var(--talkio-space-5);
+    border-top: 1px solid var(--talkio-border);
+    background-color: var(--talkio-surface-1);
+    flex: 0 0 auto;
+}
+
+.message-composer__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 44px;
+    max-height: 160px;
+    padding: 11px var(--talkio-space-4);
+    background-color: var(--talkio-surface-2);
+    border: 1px solid transparent;
+    border-radius: var(--talkio-radius-lg);
+    color: var(--talkio-text);
+    font-size: var(--talkio-font-size-base);
+    line-height: var(--talkio-line-normal);
+    resize: none;
+    overflow-y: auto;
+    transition: border-color var(--talkio-transition-fast),
+        background-color var(--talkio-transition-fast);
+}
+
+.message-composer__input::placeholder {
+    color: var(--talkio-text-dim);
+}
+
+.message-composer__input:focus {
+    border-color: var(--talkio-primary);
+    background-color: var(--talkio-surface-3);
+}
+
+.message-composer__input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.message-composer__send {
+    flex: 0 0 auto;
+    height: 44px;
+    padding: 0 var(--talkio-space-5);
+    border-radius: var(--talkio-radius-lg);
+    font-size: var(--talkio-font-size-sm);
+    font-weight: var(--talkio-weight-semibold);
+    color: var(--talkio-text-on-primary);
+    background: var(--talkio-primary-gradient);
+    box-shadow: var(--talkio-shadow-purple);
+    transition: transform var(--talkio-transition-fast),
+        filter var(--talkio-transition-fast),
+        box-shadow var(--talkio-transition-fast),
+        opacity var(--talkio-transition-fast);
+}
+
+.message-composer__send:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+}
+
+.message-composer__send:active:not(:disabled) {
+    transform: translateY(0);
+    filter: brightness(0.96);
+}
+
+.message-composer__send:disabled {
+    background: var(--talkio-surface-3);
+    color: var(--talkio-text-dim);
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* ============================================================
+   Responsive tweaks within the chat area
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .chat-header {
+        padding: 0 var(--talkio-space-4);
+    }
+
+    .chat-area__messages {
+        padding: var(--talkio-space-4) var(--talkio-space-4)
+            var(--talkio-space-3);
+    }
+
+    .message-composer {
+        padding: var(--talkio-space-3) var(--talkio-space-3)
+            var(--talkio-space-4);
+    }
+
+    .message-bubble {
+        max-width: 82%;
+    }
+}

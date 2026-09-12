@@ -1,0 +1,130 @@
+/* ============================================================
+   Reset + global base
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--talkio-font-sans);
+    font-size: var(--talkio-font-size-base);
+    line-height: var(--talkio-line-normal);
+    color: var(--talkio-text);
+    background-color: var(--talkio-bg);
+    overflow: hidden; /* the app owns its own scroll regions */
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+input,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+a {
+    color: var(--talkio-primary);
+    text-decoration: none;
+    transition: color var(--talkio-transition-fast);
+}
+
+a:hover {
+    color: var(--talkio-primary-hover);
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+/* ---- Focus visible (accessibility, but styled to fit) ---- */
+:focus-visible {
+    outline: 2px solid var(--talkio-primary);
+    outline-offset: 2px;
+    border-radius: var(--talkio-radius-sm);
+}
+
+/* ---- Scrollbars (webkit + firefox) ---- */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--talkio-surface-3) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--talkio-surface-3);
+    border-radius: var(--talkio-radius-full);
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: #2e2e3d;
+}
+
+/* ---- Loading route (used by ProtectedRoute/PublicRoute) ---- */
+.route-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: var(--talkio-text-muted);
+    font-size: var(--talkio-font-size-md);
+    letter-spacing: 0.02em;
+    background-color: var(--talkio-bg);
+}
+
+/* ---- Root scroll -- when we later want a page to scroll, this resets ---- */
+body.allow-scroll {
+    overflow: auto;
+}

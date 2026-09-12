@@ -1,0 +1,168 @@
+/* ============================================================
+   Talkio profile setup (Phase 8d)
+   ============================================================ */
+
+.profile-setup-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: var(--talkio-space-8) var(--talkio-space-5);
+    background-color: var(--talkio-bg);
+    background-image:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(124, 92, 255, 0.10),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at 85% 85%,
+            rgba(34, 197, 94, 0.07),
+            transparent 45%
+        );
+    color: var(--talkio-text);
+}
+
+.profile-setup-card {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--talkio-space-6);
+    padding: var(--talkio-space-10);
+    background-color: var(--talkio-surface-1);
+    border: 1px solid var(--talkio-border);
+    border-radius: var(--talkio-radius-xl);
+    box-shadow: var(--talkio-shadow-lg);
+}
+
+.profile-setup-card__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--talkio-space-2);
+    text-align: left;
+}
+
+.profile-setup-card__eyebrow {
+    font-size: var(--talkio-font-size-xs);
+    font-weight: var(--talkio-weight-semibold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--talkio-primary);
+}
+
+.profile-setup-card__title {
+    font-size: var(--talkio-font-size-2xl);
+    font-weight: var(--talkio-weight-bold);
+    letter-spacing: -0.01em;
+    line-height: var(--talkio-line-tight);
+    color: var(--talkio-text);
+}
+
+.profile-setup-card__subtitle {
+    font-size: var(--talkio-font-size-base);
+    color: var(--talkio-text-muted);
+    line-height: var(--talkio-line-normal);
+}
+
+.profile-setup-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--talkio-space-4);
+}
+
+.profile-setup-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--talkio-space-2);
+}
+
+.profile-setup-form__label {
+    font-size: var(--talkio-font-size-sm);
+    font-weight: var(--talkio-weight-medium);
+    color: var(--talkio-text-muted);
+}
+
+.profile-setup-form__input {
+    width: 100%;
+    height: 44px;
+    padding: 0 var(--talkio-space-4);
+    font-size: var(--talkio-font-size-base);
+    color: var(--talkio-text);
+    background-color: var(--talkio-surface-2);
+    border: 1px solid var(--talkio-border);
+    border-radius: var(--talkio-radius-md);
+    transition: border-color var(--talkio-transition-fast),
+        background-color var(--talkio-transition-fast),
+        box-shadow var(--talkio-transition-fast);
+}
+
+.profile-setup-form__input:focus {
+    outline: none;
+    border-color: var(--talkio-primary);
+    background-color: var(--talkio-surface-3);
+    box-shadow: 0 0 0 4px var(--talkio-primary-soft);
+}
+
+.profile-setup-form__textarea {
+    width: 100%;
+    min-height: 96px;
+    padding: var(--talkio-space-3) var(--talkio-space-4);
+    font-size: var(--talkio-font-size-base);
+    font-family: inherit;
+    line-height: var(--talkio-line-normal);
+    color: var(--talkio-text);
+    background-color: var(--talkio-surface-2);
+    border: 1px solid var(--talkio-border);
+    border-radius: var(--talkio-radius-md);
+    resize: vertical;
+    transition: border-color var(--talkio-transition-fast),
+        background-color var(--talkio-transition-fast),
+        box-shadow var(--talkio-transition-fast);
+}
+
+.profile-setup-form__textarea:focus {
+    outline: none;
+    border-color: var(--talkio-primary);
+    background-color: var(--talkio-surface-3);
+    box-shadow: 0 0 0 4px var(--talkio-primary-soft);
+}
+
+.profile-setup-form__file {
+    display: block;
+    width: 100%;
+    font-size: var(--talkio-font-size-sm);
+    color: var(--talkio-text-muted);
+    cursor: pointer;
+}
+
+.profile-setup-form__file::file-selector-button {
+    height: 36px;
+    padding: 0 var(--talkio-space-4);
+    margin-right: var(--talkio-space-3);
+    border-radius: var(--talkio-radius-md);
+    border: 1px solid var(--talkio-border);
+    background-color: var(--talkio-surface-2);
+    color: var(--talkio-text);
+    font: inherit;
+    font-weight: var(--talkio-weight-medium);
+    cursor: pointer;
+    transition: background-color var(--talkio-transition-fast),
+        border-color var(--talkio-transition-fast);
+}
+
+.profile-setup-form__file::file-selector-button:hover {
+    background-color: var(--talkio-surface-3);
+    border-color: var(--talkio-primary);
+}
+
+.profile-setup-form .button {
+    width: 100%;
+    margin-top: var(--talkio-space-2);
+}
+
+@media (max-width: 600px) {
+    .profile-setup-card {
+        padding: var(--talkio-space-8) var(--talkio-space-5);
+    }
+}

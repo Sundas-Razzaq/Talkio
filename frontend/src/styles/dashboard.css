@@ -1,0 +1,825 @@
+/* ============================================================
+   Talkio dashboard — layout shell
+   Two-column WhatsApp-Web-style grid.
+   ============================================================ */
+
+.chat-dashboard {
+    display: grid;
+    grid-template-columns: var(--talkio-sidebar-width) 1fr;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--talkio-bg);
+    color: var(--talkio-text);
+}
+
+/* ---- Left: sidebar frame ---- */
+.chat-sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--talkio-surface-1);
+    border-right: 1px solid var(--talkio-border);
+    overflow: hidden;
+}
+
+/* Vertical sections of the sidebar. Each is a direct flex child. */
+.chat-sidebar__header,
+.chat-sidebar__search,
+.chat-sidebar__footer {
+    flex: 0 0 auto;
+}
+
+.chat-sidebar__conversations {
+    flex: 1 1 auto;
+    min-height: 0; /* critical: allows inner scroll */
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---- Right: chat area frame ---- */
+.chat-area {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 0;
+    background-color: var(--talkio-bg);
+    background-image:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(124, 92, 255, 0.06),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(34, 197, 94, 0.05),
+            transparent 45%
+        );
+    overflow: hidden;
+}
+
+.chat-area__messages {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.chat-area--empty {
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---- Small-screen fallback ---- */
+@media (max-width: 768px) {
+    .chat-dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    /* On mobile we'll later hide one side or the other via state.
+       For 8a, just collapse to single column. */
+}
+
+/* ============================================================
+   Talkio dashboard — layout shell (Phase 8a)
+   ============================================================ */
+
+.chat-dashboard {
+    display: grid;
+    grid-template-columns: var(--talkio-sidebar-width) 1fr;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--talkio-bg);
+    color: var(--talkio-text);
+}
+
+.chat-sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--talkio-surface-1);
+    border-right: 1px solid var(--talkio-border);
+    overflow: hidden;
+}
+
+.chat-sidebar__header,
+.chat-sidebar__search,
+.chat-sidebar__footer {
+    flex: 0 0 auto;
+}
+
+.chat-sidebar__conversations {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-area {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 0;
+    background-color: var(--talkio-bg);
+    background-image:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(124, 92, 255, 0.06),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(34, 197, 94, 0.05),
+            transparent 45%
+        );
+    overflow: hidden;
+}
+
+.chat-area__messages {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.chat-area--empty {
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .chat-dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================
+   Sidebar header (Phase 8b)
+   ============================================================ */
+
+.chat-sidebar__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--talkio-header-height);
+    padding: 0 var(--talkio-space-4);
+    border-bottom: 1px solid var(--talkio-border);
+    background-color: var(--talkio-surface-1);
+}
+
+.chat-sidebar__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chat-sidebar__brand-logo {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    flex: 0 0 auto;
+}
+
+.chat-sidebar__brand-name {
+    font-size: var(--talkio-font-size-xl);
+    font-weight: var(--talkio-weight-bold);
+    letter-spacing: -0.02em;
+    background: var(--talkio-primary-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+}
+
+.chat-sidebar__menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--talkio-radius-full);
+    color: var(--talkio-text-muted);
+    font-size: var(--talkio-font-size-lg);
+    transition: background-color var(--talkio-transition-fast),
+        color var(--talkio-transition-fast);
+}
+
+.chat-sidebar__menu-button:hover {
+    background-color: var(--talkio-surface-2);
+    color: var(--talkio-text);
+}
+
+/* ============================================================
+   Sidebar search (Phase 8b)
+   ============================================================ */
+
+.chat-sidebar__search {
+    padding: var(--talkio-space-3) var(--talkio-space-4);
+}
+
+.chat-sidebar__search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--talkio-space-2);
+    height: 40px;
+    padding: 0 var(--talkio-space-3);
+    background-color: var(--talkio-surface-2);
+    border: 1px solid transparent;
+    border-radius: var(--talkio-radius-full);
+    transition: border-color var(--talkio-transition-fast),
+        background-color var(--talkio-transition-fast);
+}
+
+.chat-sidebar__search-wrapper:focus-within {
+    border-color: var(--talkio-primary);
+    background-color: var(--talkio-surface-3);
+}
+
+.chat-sidebar__search-icon {
+    color: var(--talkio-text-dim);
+    font-size: var(--talkio-font-size-md);
+    line-height: 1;
+    flex: 0 0 auto;
+}
+
+.chat-sidebar__search-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    font-size: var(--talkio-font-size-base);
+    color: var(--talkio-text);
+    background: transparent;
+}
+
+.chat-sidebar__search-input::placeholder {
+    color: var(--talkio-text-dim);
+}
+
+.chat-sidebar__search-input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.chat-sidebar__search-clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: var(--talkio-radius-full);
+    color: var(--talkio-text-muted);
+    font-size: var(--talkio-font-size-lg);
+    line-height: 1;
+    transition: background-color var(--talkio-transition-fast),
+        color var(--talkio-transition-fast);
+}
+
+.chat-sidebar__search-clear:hover {
+    background-color: var(--talkio-surface-3);
+    color: var(--talkio-text);
+}
+
+/* ============================================================
+   Sidebar tabs (Phase 8b)
+   ============================================================ */
+
+.sidebar-tabs {
+    display: flex;
+    align-items: stretch;
+    padding: 0 var(--talkio-space-4);
+    border-bottom: 1px solid var(--talkio-border);
+    background-color: var(--talkio-surface-1);
+}
+
+.sidebar-tabs__tab {
+    flex: 1 1 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--talkio-space-1);
+    padding: var(--talkio-space-3) var(--talkio-space-2);
+    font-size: var(--talkio-font-size-sm);
+    font-weight: var(--talkio-weight-medium);
+    color: var(--talkio-text-muted);
+    position: relative;
+    transition: color var(--talkio-transition-fast);
+}
+
+.sidebar-tabs__tab:hover {
+    color: var(--talkio-text);
+}
+
+.sidebar-tabs__tab--active {
+    color: var(--talkio-primary);
+}
+
+.sidebar-tabs__tab--active::after {
+    content: "";
+    position: absolute;
+    left: var(--talkio-space-2);
+    right: var(--talkio-space-2);
+    bottom: -1px;
+    height: 2px;
+    background: var(--talkio-primary-gradient);
+    border-radius: var(--talkio-radius-full);
+}
+
+.sidebar-tabs__label {
+    line-height: 1;
+}
+
+.sidebar-tabs__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: var(--talkio-radius-full);
+    background-color: var(--talkio-primary);
+    color: var(--talkio-text-on-primary);
+    font-size: var(--talkio-font-size-xs);
+    font-weight: var(--talkio-weight-semibold);
+    line-height: 1;
+}
+
+/* ============================================================
+   Conversation list (Phase 8b)
+   ============================================================ */
+
+.conversation-list {
+    display: flex;
+    flex-direction: column;
+    padding: var(--talkio-space-2) var(--talkio-space-2) var(--talkio-space-4);
+    gap: 2px;
+}
+
+.conversation-list__item {
+    display: block;
+}
+
+.conversation-row {
+    display: flex;
+    align-items: center;
+    gap: var(--talkio-space-3);
+    width: 100%;
+    padding: var(--talkio-space-3);
+    border-radius: var(--talkio-radius-md);
+    text-align: left;
+    transition: background-color var(--talkio-transition-fast);
+}
+
+.conversation-row:hover {
+    background-color: var(--talkio-surface-hover);
+}
+
+.conversation-row--selected {
+    background-color: var(--talkio-surface-3);
+    box-shadow: inset 3px 0 0 var(--talkio-primary);
+}
+
+.conversation-row__avatar {
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--talkio-radius-full);
+    overflow: hidden;
+    background: var(--talkio-primary-soft);
+    color: var(--talkio-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--talkio-weight-semibold);
+    font-size: var(--talkio-font-size-lg);
+    border: 1px solid var(--talkio-border);
+}
+
+.conversation-row__avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.conversation-row__avatar-placeholder {
+    line-height: 1;
+}
+
+.conversation-row__body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.conversation-row__name {
+    font-size: var(--talkio-font-size-md);
+    font-weight: var(--talkio-weight-semibold);
+    color: var(--talkio-text);
+    line-height: var(--talkio-line-tight);
+    margin-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.conversation-row__preview {
+    font-size: var(--talkio-font-size-sm);
+    color: var(--talkio-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.conversation-list--loading,
+.conversation-list--empty {
+    padding: var(--talkio-space-8) var(--talkio-space-6);
+    text-align: center;
+}
+
+.conversation-list__empty-icon {
+    font-size: var(--talkio-font-size-3xl);
+    margin-bottom: var(--talkio-space-3);
+    opacity: 0.65;
+}
+
+.conversation-list__empty-title {
+    font-size: var(--talkio-font-size-md);
+    font-weight: var(--talkio-weight-semibold);
+    color: var(--talkio-text);
+    margin-bottom: var(--talkio-space-2);
+}
+
+.conversation-list__empty-description,
+.conversation-list__message {
+    font-size: var(--talkio-font-size-sm);
+    color: var(--talkio-text-muted);
+    line-height: var(--talkio-line-relaxed);
+}
+
+/* ============================================================
+   Friends / requests lists (Phase 8b)
+   ============================================================ */
+
+.friends-list,
+.requests-list {
+    display: flex;
+    flex-direction: column;
+    padding: var(--talkio-space-2) var(--talkio-space-2) var(--talkio-space-4);
+    gap: 2px;
+}
+
+.friends-list__item,
+.requests-list__item {
+    display: block;
+}
+
+.friends-list--empty,
+.friends-list--loading,
+.requests-list--empty,
+.requests-list--loading {
+    padding: var(--talkio-space-8) var(--talkio-space-6);
+    text-align: center;
+}
+
+.friends-list__empty-title,
+.requests-list__empty-title {
+    font-size: var(--talkio-font-size-md);
+    font-weight: var(--talkio-weight-semibold);
+    color: var(--talkio-text);
+    margin-bottom: var(--talkio-space-2);
+}
+
+.friends-list__empty-description,
+.friends-list__message,
+.requests-list__empty-description,
+.requests-list__message {
+    font-size: var(--talkio-font-size-sm);
+    color: var(--talkio-text-muted);
+    line-height: var(--talkio-line-relaxed);
+}
+
+/* ---- Reusable friend / user card ---- */
+
+.friend-card {
+    display: flex;
+    align-items: center;
+    gap: var(--talkio-space-3);
+    padding: var(--talkio-space-3);
+    border-radius: var(--talkio-radius-md);
+    transition: background-color var(--talkio-transition-fast);
+}
+
+.friend-card--clickable {
+    cursor: pointer;
+}
+
+.friend-card--clickable:hover {
+    background-color: var(--talkio-surface-hover);
+}
+
+.friend-card__avatar {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--talkio-radius-full);
+    overflow: hidden;
+    background: var(--talkio-primary-soft);
+    color: var(--talkio-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--talkio-weight-semibold);
+    font-size: var(--talkio-font-size-md);
+    border: 1px solid var(--talkio-border);
+}
+
+.friend-card__avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.friend-card__avatar-placeholder {
+    line-height: 1;
+}
+
+.friend-card__info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.friend-card__name {
+    font-size: var(--talkio-font-size-base);
+    font-weight: var(--talkio-weight-semibold);
+    color: var(--talkio-text);
+    line-height: var(--talkio-line-tight);
+    margin-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.friend-card__email {
+    font-size: var(--talkio-font-size-xs);
+    color: var(--talkio-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.friend-card__action {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--talkio-space-2);
+}
+
+.friend-card__starting {
+    font-size: var(--talkio-font-size-xs);
+    color: var(--talkio-text-muted);
+}
+
+/* ---- Requests accept / reject ---- */
+
+.requests-list__action {
+    padding: 6px 12px;
+    border-radius: var(--talkio-radius-full);
+    font-size: var(--talkio-font-size-xs);
+    font-weight: var(--talkio-weight-semibold);
+    line-height: 1;
+    transition: background-color var(--talkio-transition-fast),
+        color var(--talkio-transition-fast),
+        transform var(--talkio-transition-fast);
+}
+
+.requests-list__action:disabled {
+    opacity: 0.6;
+}
+
+.requests-list__action--accept {
+    background-color: var(--talkio-accent-soft);
+    color: var(--talkio-accent-hover);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.requests-list__action--accept:hover:not(:disabled) {
+    background-color: var(--talkio-accent);
+    color: var(--talkio-bg);
+}
+
+.requests-list__action--reject {
+    background-color: rgba(239, 68, 68, 0.12);
+    color: var(--talkio-danger-hover);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.requests-list__action--reject:hover:not(:disabled) {
+    background-color: var(--talkio-danger);
+    color: #ffffff;
+}
+
+/* ============================================================
+   User search results (Phase 8b)
+   ============================================================ */
+
+.search-results {
+    display: flex;
+    flex-direction: column;
+    padding: var(--talkio-space-4);
+}
+
+.search-results__message {
+    padding: var(--talkio-space-6);
+    text-align: center;
+    font-size: var(--talkio-font-size-sm);
+    color: var(--talkio-text-muted);
+}
+
+.search-results__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--talkio-space-3);
+    padding: var(--talkio-space-8) var(--talkio-space-4);
+    text-align: center;
+}
+
+.search-results__empty-title {
+    font-size: var(--talkio-font-size-md);
+    font-weight: var(--talkio-weight-semibold);
+    color: var(--talkio-text);
+}
+
+.search-results__empty-description {
+    font-size: var(--talkio-font-size-sm);
+    color: var(--talkio-text-muted);
+    line-height: var(--talkio-line-relaxed);
+}
+
+.search-results__empty-description strong {
+    color: var(--talkio-text);
+    font-weight: var(--talkio-weight-semibold);
+}
+
+.search-results__invite-button {
+    margin-top: var(--talkio-space-2);
+    padding: 10px 18px;
+    border-radius: var(--talkio-radius-full);
+    font-size: var(--talkio-font-size-sm);
+    font-weight: var(--talkio-weight-semibold);
+    color: var(--talkio-text-on-primary);
+    background: var(--talkio-primary-gradient);
+    box-shadow: var(--talkio-shadow-purple);
+    transition: transform var(--talkio-transition-fast),
+        filter var(--talkio-transition-fast);
+}
+
+.search-results__invite-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+}
+
+.search-results__invite-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.search-results--found .friend-card {
+    background-color: var(--talkio-surface-2);
+    border: 1px solid var(--talkio-border);
+    padding: var(--talkio-space-4);
+}
+
+.user-card__action {
+    padding: 8px 14px;
+    border-radius: var(--talkio-radius-full);
+    font-size: var(--talkio-font-size-xs);
+    font-weight: var(--talkio-weight-semibold);
+    color: var(--talkio-text-on-primary);
+    background: var(--talkio-primary-gradient);
+    line-height: 1;
+    transition: filter var(--talkio-transition-fast),
+        transform var(--talkio-transition-fast);
+}
+
+.user-card__action:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+}
+
+.user-card__action--muted {
+    background: var(--talkio-surface-3);
+    color: var(--talkio-text-muted);
+    cursor: default;
+}
+
+.user-card__action--muted:hover {
+    transform: none;
+    filter: none;
+}
+
+.user-card__action--accept {
+    background: linear-gradient(
+        135deg,
+        var(--talkio-accent) 0%,
+        var(--talkio-accent-hover) 100%
+    );
+    box-shadow: 0 4px 20px var(--talkio-accent-glow);
+}
+
+/* ============================================================
+   Sidebar footer (profile) (Phase 8b)
+   ============================================================ */
+
+.chat-sidebar__footer {
+    padding: var(--talkio-space-3) var(--talkio-space-4);
+    border-top: 1px solid var(--talkio-border);
+    background-color: var(--talkio-surface-2);
+}
+
+.chat-sidebar__profile {
+    display: flex;
+    align-items: center;
+    gap: var(--talkio-space-3);
+}
+
+.chat-sidebar__avatar {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--talkio-radius-full);
+    overflow: hidden;
+    background: var(--talkio-primary-soft);
+    color: var(--talkio-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--talkio-weight-semibold);
+    font-size: var(--talkio-font-size-base);
+    border: 1px solid var(--talkio-border);
+}
+
+.chat-sidebar__avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.chat-sidebar__avatar-placeholder {
+    line-height: 1;
+}
+
+.chat-sidebar__user-info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.chat-sidebar__user-name {
+    font-size: var(--talkio-font-size-base);
+    font-weight: var(--talkio-weight-semibold);
+    color: var(--talkio-text);
+    line-height: var(--talkio-line-tight);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chat-sidebar__user-status {
+    font-size: var(--talkio-font-size-xs);
+    color: var(--talkio-accent);
+    line-height: var(--talkio-line-tight);
+    margin-top: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chat-sidebar__user-status::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--talkio-accent);
+    box-shadow: 0 0 0 3px var(--talkio-accent-soft);
+}
+
+.chat-sidebar__profile-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--talkio-radius-full);
+    color: var(--talkio-text-muted);
+    font-size: var(--talkio-font-size-md);
+    transition: background-color var(--talkio-transition-fast),
+        color var(--talkio-transition-fast);
+}
+
+.chat-sidebar__profile-button:hover {
+    background-color: var(--talkio-surface-3);
+    color: var(--talkio-text);
+}
+

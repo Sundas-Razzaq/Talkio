@@ -1,0 +1,111 @@
+/* ============================================================
+   Talkio design tokens
+   deep black, violet/purple, mint green.
+   ============================================================ */
+
+:root {
+    /* ---- Surfaces (blacks) ---- */
+    --talkio-bg: #0a0a0f;
+    --talkio-surface-1: #111118;
+    --talkio-surface-2: #1a1a24;
+    --talkio-surface-3: #22222e;
+    --talkio-surface-hover: #20202b;
+
+    --talkio-border: #262633;
+    --talkio-border-soft: rgba(255, 255, 255, 0.06);
+
+    /* ---- Brand: purple ---- */
+    --talkio-primary: #7c5cff;
+    --talkio-primary-hover: #8f74ff;
+    --talkio-primary-deep: #6a45f5;
+    --talkio-primary-soft: rgba(124, 92, 255, 0.15);
+    --talkio-primary-glow: rgba(124, 92, 255, 0.35);
+    --talkio-primary-gradient: linear-gradient(
+        135deg,
+        #7c5cff 0%,
+        #a855f7 100%
+    );
+
+    /* ---- Accent: green / mint ---- */
+    --talkio-accent: #22c55e;
+    --talkio-accent-hover: #34d399;
+    --talkio-accent-soft: rgba(34, 197, 94, 0.15);
+    --talkio-accent-glow: rgba(34, 197, 94, 0.35);
+
+    /* ---- Semantic ---- */
+    --talkio-success: #22c55e;
+    --talkio-danger: #ef4444;
+    --talkio-danger-hover: #f87171;
+    --talkio-warning: #f59e0b;
+
+    /* ---- Text ---- */
+    --talkio-text: #eaeaf2;
+    --talkio-text-muted: #9a9aa8;
+    --talkio-text-dim: #5a5a6a;
+    --talkio-text-on-primary: #ffffff;
+
+    /* ---- Message bubbles ---- */
+    --talkio-bubble-own-bg: var(--talkio-primary-gradient);
+    --talkio-bubble-own-text: #ffffff;
+    --talkio-bubble-other-bg: #1e1e2a;
+    --talkio-bubble-other-text: #eaeaf2;
+
+    /* ---- Typography ---- */
+    --talkio-font-sans: "Inter", "Segoe UI", system-ui, -apple-system,
+        "Helvetica Neue", Arial, sans-serif;
+    --talkio-font-size-xs: 0.75rem;    /* 12px */
+    --talkio-font-size-sm: 0.8125rem;  /* 13px */
+    --talkio-font-size-base: 0.875rem; /* 14px */
+    --talkio-font-size-md: 0.9375rem;  /* 15px */
+    --talkio-font-size-lg: 1.0625rem;  /* 17px */
+    --talkio-font-size-xl: 1.25rem;    /* 20px */
+    --talkio-font-size-2xl: 1.5rem;    /* 24px */
+    --talkio-font-size-3xl: 2rem;      /* 32px */
+
+    --talkio-line-tight: 1.2;
+    --talkio-line-normal: 1.45;
+    --talkio-line-relaxed: 1.6;
+
+    --talkio-weight-regular: 400;
+    --talkio-weight-medium: 500;
+    --talkio-weight-semibold: 600;
+    --talkio-weight-bold: 700;
+
+    /* ---- Spacing ---- */
+    --talkio-space-1: 0.25rem;
+    --talkio-space-2: 0.5rem;
+    --talkio-space-3: 0.75rem;
+    --talkio-space-4: 1rem;
+    --talkio-space-5: 1.25rem;
+    --talkio-space-6: 1.5rem;
+    --talkio-space-8: 2rem;
+    --talkio-space-10: 2.5rem;
+    --talkio-space-12: 3rem;
+
+    /* ---- Radii ---- */
+    --talkio-radius-sm: 6px;
+    --talkio-radius-md: 10px;
+    --talkio-radius-lg: 14px;
+    --talkio-radius-xl: 20px;
+    --talkio-radius-full: 9999px;
+
+    /* ---- Shadows ---- */
+    --talkio-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+    --talkio-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --talkio-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+    --talkio-shadow-purple: 0 4px 20px rgba(124, 92, 255, 0.35);
+
+    /* ---- Layout ---- */
+    --talkio-sidebar-width: 360px;
+    --talkio-header-height: 64px;
+
+    /* ---- Motion ---- */
+    --talkio-transition-fast: 120ms ease;
+    --talkio-transition-base: 200ms ease;
+    --talkio-transition-slow: 320ms ease;
+
+    /* ---- Z-index ---- */
+    --talkio-z-dropdown: 100;
+    --talkio-z-modal: 1000;
+    --talkio-z-toast: 2000;
+}

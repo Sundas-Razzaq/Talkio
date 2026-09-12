@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import AuthPageShell from "../../components/auth/authPageShell.jsx";
 import { useAuth } from "../../hooks/useAuth.js";
 import { resolveErrorMessage } from "../../utils/helpers.js";
 
@@ -52,96 +53,83 @@ function LoginPage() {
     };
 
     return (
-        <main className="auth-page auth-page--login">
-            <section className="auth-card">
-                <header className="auth-card__header">
-                    <p className="auth-card__eyebrow">
-                        Welcome back
-                    </p>
-
-                    <h1 className="auth-card__title">
-                        Login to Talkio
-                    </h1>
-
-                    <p className="auth-card__subtitle">
-                        Continue your conversations.
-                    </p>
-                </header>
-
-                <form
-                    className="auth-form"
-                    onSubmit={handleSubmit}
-                >
-                    <div className="auth-form__field">
-                        <label
-                            className="auth-form__label"
-                            htmlFor="email"
-                        >
-                            Email
-                        </label>
-
-                        <input
-                            className="auth-form__input"
-                            id="email"
-                            name="email"
-                            type="email"
-                            value={form.email}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-
-                    <div className="auth-form__field">
-                        <label
-                            className="auth-form__label"
-                            htmlFor="password"
-                        >
-                            Password
-                        </label>
-
-                        <input
-                            className="auth-form__input"
-                            id="password"
-                            name="password"
-                            type="password"
-                            value={form.password}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-
-                    {error ? (
-                        <p className="form-message form-message--error">
-                            {error}
-                        </p>
-                    ) : null}
-
-                    <button
-                        className="button button--primary auth-form__submit"
-                        type="submit"
-                        disabled={loading}
+        <AuthPageShell
+            eyebrow="Welcome back"
+            title="Login to Talkio"
+            subtitle="Continue your conversations."
+            footer={
+                <>
+                    <Link
+                        className="auth-link"
+                        to="/forgot-password"
                     >
-                        {loading
-                            ? "Signing in..."
-                            : "Login"}
-                    </button>
-                </form>
-
-                <footer className="auth-card__footer">
-                    <Link to="/forgot-password">
                         Forgot password?
                     </Link>
 
-                    <span>
-                        Don't have an account?
+                    <span className="auth-card__footer-text">
+                        Don&apos;t have an account?
                     </span>
 
-                    <Link to="/register">
+                    <Link className="auth-link" to="/register">
                         Create an account
                     </Link>
-                </footer>
-            </section>
-        </main>
+                </>
+            }
+        >
+            <form className="auth-form" onSubmit={handleSubmit}>
+                <div className="form-field">
+                    <label
+                        className="form-field__label"
+                        htmlFor="email"
+                    >
+                        Email
+                    </label>
+
+                    <input
+                        className="form-field__input"
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={form.email}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                <div className="form-field">
+                    <label
+                        className="form-field__label"
+                        htmlFor="password"
+                    >
+                        Password
+                    </label>
+
+                    <input
+                        className="form-field__input"
+                        id="password"
+                        name="password"
+                        type="password"
+                        value={form.password}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                {error ? (
+                    <p className="form-message form-message--error">
+                        {error}
+                    </p>
+                ) : null}
+
+                <button
+                    className="button button--primary auth-form__submit"
+                    type="submit"
+                    disabled={loading}
+                >
+                    {loading ? "Signing in..." : "Login"}
+                </button>
+            </form>
+        </AuthPageShell>
     );
 }
 

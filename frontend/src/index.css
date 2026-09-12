@@ -1,8 +1,11 @@
-/* @import "./variables.css";
-@import "./global.css";
-@import "./components.css";
-@import "./auth.css";
-@import "./profile.css";
-@import "./dashboard.css";
-@import "./friends.css";
-@import "./chat.css"; */
+/*
+
+@import "./styles/friends.css"; */
+@import "./styles/variables.css";
+@import "./styles/global.css";
+@import "./styles/dashboard.css";
+@import "./styles/chat.css";
+@import "./styles/components.css";
+@import "./styles/auth.css";
+@import "./styles/landing.css";
+@import "./styles/profile.css";
