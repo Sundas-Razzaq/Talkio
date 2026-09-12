@@ -11,8 +11,22 @@ const formatTime = (isoString) => {
     }
 };
 
-const MessageBubble = ({ message, isOwn }) => {
+const MessageBubble = ({ message, isOwn, otherUserId }) => {
     if (!message) return null;
+
+    const time = formatTime(message.createdAt);
+
+    const readBy = message.readBy || [];
+    const isReadByOther =
+        isOwn &&
+        otherUserId &&
+        readBy.some(
+            (id) => id?.toString() === otherUserId?.toString()
+        );
+
+    const tickClass =
+        "message-bubble__ticks" +
+        (isReadByOther ? " message-bubble__ticks--read" : "");
 
     return (
         <div
@@ -28,7 +42,17 @@ const MessageBubble = ({ message, isOwn }) => {
             </p>
 
             <span className="message-bubble__time">
-                {formatTime(message.createdAt)}
+                {time}
+                {isOwn ? (
+                    <span
+                        className={tickClass}
+                        aria-label={
+                            isReadByOther ? "Read" : "Sent"
+                        }
+                    >
+                        {isReadByOther ? "✓✓" : "✓"}
+                    </span>
+                ) : null}
             </span>
         </div>
     );

@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const MAX_LENGTH = 5000;
+const MAX_HEIGHT = 160;
 const TYPING_DEBOUNCE_MS = 1500;
 
 const MessageComposer = ({
@@ -17,6 +18,19 @@ const MessageComposer = ({
 
     const trimmed = value.trim();
     const canSend = !disabled && !sending && trimmed.length > 0;
+
+    // ---- auto-grow ----
+    useLayoutEffect(() => {
+        const el = textareaRef.current;
+        if (!el) return;
+
+        el.style.height = "auto";
+        const next = Math.min(el.scrollHeight, MAX_HEIGHT);
+        el.style.height = `${next}px`;
+
+        el.style.overflowY =
+            el.scrollHeight > MAX_HEIGHT ? "auto" : "hidden";
+    }, [value]);
 
     const stopTyping = () => {
         if (typingTimeoutRef.current) {

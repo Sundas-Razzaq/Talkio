@@ -1,15 +1,51 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
 import { useAuth } from "../../hooks/useAuth.js";
 import MessageBubble from "./MessageBubble.jsx";
 
 const MessageList = ({ messages, loading, error, otherUser }) => {
     const { user } = useAuth();
     const bottomRef = useRef(null);
+    const containerRef = useRef(null);
 
+    const [showScrollButton, setShowScrollButton] = useState(false);
+
+    // Scroll to bottom when new messages arrive AND the user is
+    // already near the bottom. If they've scrolled up to read, do
+    // not yank them down — show a jump-to-bottom button instead.
     useEffect(() => {
-        if (!bottomRef.current) return;
-        bottomRef.current.scrollIntoView({ block: "end" });
+        const container = containerRef.current;
+        if (!container) return;
+
+        const nearBottom =
+            container.scrollHeight -
+            container.scrollTop -
+            container.clientHeight <
+            120;
+
+        if (nearBottom) {
+            bottomRef.current?.scrollIntoView({ block: "end" });
+        }
     }, [messages]);
+
+    const handleScroll = useCallback(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const distance =
+            container.scrollHeight -
+            container.scrollTop -
+            container.clientHeight;
+
+        setShowScrollButton(distance > 200);
+    }, []);
+
+    const jumpToBottom = useCallback(() => {
+        bottomRef.current?.scrollIntoView({
+            block: "end",
+            behavior: "smooth",
+        });
+    }, []);
 
     if (loading) {
         return (
@@ -46,7 +82,11 @@ const MessageList = ({ messages, loading, error, otherUser }) => {
     }
 
     return (
-        <div className="message-list">
+        <div
+            className="message-list"
+            ref={containerRef}
+            onScroll={handleScroll}
+        >
             {messages.map((message) => {
                 const senderId =
                     typeof message.sender === "object"
@@ -61,11 +101,23 @@ const MessageList = ({ messages, loading, error, otherUser }) => {
                         key={message._id}
                         message={message}
                         isOwn={isOwn}
+                        otherUserId={otherUser?._id}
                     />
                 );
             })}
 
             <div ref={bottomRef} />
+
+            {showScrollButton ? (
+                <button
+                    type="button"
+                    className="message-list__jump"
+                    onClick={jumpToBottom}
+                    aria-label="Scroll to latest messages"
+                >
+                    ↓
+                </button>
+            ) : null}
         </div>
     );
 };
