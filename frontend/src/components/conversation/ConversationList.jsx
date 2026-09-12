@@ -1,5 +1,7 @@
 import { useAuth } from "../../hooks/useAuth.js";
 import { getOtherParticipant } from "../../utils/conversationHelpers.js";
+import { MessageCircle } from "lucide-react";
+import { motion } from "framer-motion";
 
 const formatUnreadCount = (count) => {
     if (!count || count <= 0) return null;
@@ -28,7 +30,7 @@ const ConversationList = ({
         return (
             <div className="conversation-list conversation-list--empty">
                 <div className="conversation-list__empty-icon">
-                    <span>💬</span>
+                    <MessageCircle size={28} strokeWidth={1.6} />
                 </div>
 
                 <h3 className="conversation-list__empty-title">
@@ -72,7 +74,7 @@ const ConversationList = ({
                         key={conversation._id}
                         className="conversation-list__item"
                     >
-                        <button
+                        <motion.button
                             type="button"
                             className={
                                 "conversation-row" +
@@ -86,6 +88,8 @@ const ConversationList = ({
                             onClick={() =>
                                 onSelectConversation(conversation)
                             }
+                            whileHover={{ x: 2 }}
+                            whileTap={{ scale: 0.99 }}
                         >
                             <div className="conversation-row__avatar">
                                 {other.profilePicture?.url ? (
@@ -118,7 +122,7 @@ const ConversationList = ({
                                     {unreadBadge}
                                 </span>
                             ) : null}
-                        </button>
+                        </motion.button>
                     </li>
                 );
             })}

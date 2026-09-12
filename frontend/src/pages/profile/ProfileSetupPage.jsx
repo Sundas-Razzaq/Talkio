@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import {
     updateProfile,
@@ -59,8 +60,18 @@ function ProfileSetupPage() {
     };
 
     return (
-        <main className="profile-setup-page">
-            <section className="profile-setup-card">
+        <motion.main
+            className="profile-setup-page"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+        >
+            <motion.section
+                className="profile-setup-card"
+                initial={{ opacity: 0, y: 18, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+            >
                 <header className="profile-setup-card__header">
                     <p className="profile-setup-card__eyebrow">
                         Almost there
@@ -75,11 +86,14 @@ function ProfileSetupPage() {
                     </p>
                 </header>
 
-                <form
+                <motion.form
                     className="profile-setup-form"
                     onSubmit={handleSubmit}
+                    initial="hidden"
+                    animate="visible"
+                    variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
                 >
-                    <div className="profile-setup-form__field">
+                    <motion.div className="profile-setup-form__field" variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }}>
                         <label
                             htmlFor="profile-name"
                             className="profile-setup-form__label"
@@ -97,9 +111,9 @@ function ProfileSetupPage() {
                             }
                             required
                         />
-                    </div>
+                    </motion.div>
 
-                    <div className="profile-setup-form__field">
+                    <motion.div className="profile-setup-form__field" variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }}>
                         <label
                             htmlFor="profile-bio"
                             className="profile-setup-form__label"
@@ -116,9 +130,9 @@ function ProfileSetupPage() {
                                 setBio(event.target.value)
                             }
                         />
-                    </div>
+                    </motion.div>
 
-                    <div className="profile-setup-form__field">
+                    <motion.div className="profile-setup-form__field" variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }}>
                         <label
                             htmlFor="profile-picture"
                             className="profile-setup-form__label"
@@ -138,7 +152,7 @@ function ProfileSetupPage() {
                                 )
                             }
                         />
-                    </div>
+                    </motion.div>
 
                     {error ? (
                         <p className="form-message form-message--error">
@@ -146,18 +160,20 @@ function ProfileSetupPage() {
                         </p>
                     ) : null}
 
-                    <button
+                    <motion.button
                         className="button button--primary"
                         type="submit"
                         disabled={loading}
+                        whileHover={{ y: -1 }}
+                        whileTap={{ scale: 0.98 }}
                     >
                         {loading
                             ? "Setting up..."
                             : "Continue to Talkio"}
-                    </button>
-                </form>
-            </section>
-        </main>
+                    </motion.button>
+                </motion.form>
+            </motion.section>
+        </motion.main>
     );
 }
 

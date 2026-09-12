@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Menu, MoreVertical, Search, X } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { useAuth } from "../../hooks/useAuth.js";
 import { searchUserByEmail } from "../../api/userApi.js";
@@ -198,7 +200,12 @@ const ChatSidebar = ({
     };
 
     return (
-        <aside className="chat-sidebar">
+        <motion.aside
+            className="chat-sidebar"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+        >
             <header className="chat-sidebar__header">
                 <div className="chat-sidebar__brand">
                     <img
@@ -215,7 +222,7 @@ const ChatSidebar = ({
                     className="chat-sidebar__menu-button"
                     aria-label="Open menu"
                 >
-                    <span>•••</span>
+                    <Menu size={19} strokeWidth={1.8} />
                 </button>
             </header>
 
@@ -229,7 +236,7 @@ const ChatSidebar = ({
                         className="chat-sidebar__search-icon"
                         aria-hidden="true"
                     >
-                        ⌕
+                        <Search size={17} strokeWidth={1.8} />
                     </span>
 
                     <input
@@ -248,7 +255,7 @@ const ChatSidebar = ({
                             onClick={resetSearch}
                             aria-label="Clear search"
                         >
-                            ×
+                            <X size={15} strokeWidth={2} />
                         </button>
                     )}
                 </form>
@@ -329,11 +336,11 @@ const ChatSidebar = ({
                         className="chat-sidebar__profile-button"
                         aria-label="Open profile options"
                     >
-                        •••
+                        <MoreVertical size={18} strokeWidth={1.8} />
                     </button>
                 </div>
             </footer>
-        </aside>
+        </motion.aside>
     );
 };
 

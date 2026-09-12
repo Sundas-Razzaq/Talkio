@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
+import { MessageCircle } from "lucide-react";
+import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
 import { useAuth } from "../../hooks/useAuth.js";
@@ -246,10 +248,20 @@ const ChatArea = ({ conversation, onBack }) => {
     // --------------------------------------------------------
     if (!conversation) {
         return (
-            <section className="chat-area chat-area--empty">
-                <div className="chat-area__welcome">
+            <motion.section
+                className="chat-area chat-area--empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+            >
+                <motion.div
+                    className="chat-area__welcome"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, delay: 0.08 }}
+                >
                     <div className="chat-area__welcome-icon">
-                        <span>💬</span>
+                        <MessageCircle size={42} strokeWidth={1.5} />
                     </div>
 
                     <div className="chat-area__welcome-content">
@@ -262,8 +274,8 @@ const ChatArea = ({ conversation, onBack }) => {
                             open the Friends tab to begin a new one.
                         </p>
                     </div>
-                </div>
-            </section>
+                </motion.div>
+            </motion.section>
         );
     }
 

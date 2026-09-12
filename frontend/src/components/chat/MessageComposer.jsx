@@ -1,4 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Send } from "lucide-react";
+import { motion } from "framer-motion";
 
 const MAX_LENGTH = 5000;
 const MAX_HEIGHT = 160;
@@ -90,7 +92,7 @@ const MessageComposer = ({
     };
 
     return (
-        <form
+        <motion.form
             className="message-composer"
             onSubmit={(event) => {
                 event.preventDefault();
@@ -111,15 +113,18 @@ const MessageComposer = ({
                 disabled={disabled}
             />
 
-            <button
+            <motion.button
                 type="submit"
                 className="message-composer__send"
                 aria-label="Send message"
                 disabled={!canSend}
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.97 }}
             >
-                {sending ? "Sending…" : "Send"}
-            </button>
-        </form>
+                {sending ? "Sending…" : <Send size={17} strokeWidth={2} />}
+                <span className="sr-only">Send</span>
+            </motion.button>
+        </motion.form>
     );
 };
 

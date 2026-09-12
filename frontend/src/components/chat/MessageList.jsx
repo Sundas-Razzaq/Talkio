@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useAuth } from "../../hooks/useAuth.js";
 import MessageBubble from "./MessageBubble.jsx";
+import { ArrowDown } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const MessageList = ({ messages, loading, error, otherUser }) => {
     const { user } = useAuth();
@@ -87,6 +89,7 @@ const MessageList = ({ messages, loading, error, otherUser }) => {
             ref={containerRef}
             onScroll={handleScroll}
         >
+            <AnimatePresence initial={false}>
             {messages.map((message) => {
                 const senderId =
                     typeof message.sender === "object"
@@ -97,14 +100,22 @@ const MessageList = ({ messages, loading, error, otherUser }) => {
                     senderId?.toString() === user?._id?.toString();
 
                 return (
-                    <MessageBubble
+                    <motion.div
                         key={message._id}
-                        message={message}
-                        isOwn={isOwn}
-                        otherUserId={otherUser?._id}
-                    />
+                        layout
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <MessageBubble
+                            message={message}
+                            isOwn={isOwn}
+                            otherUserId={otherUser?._id}
+                        />
+                    </motion.div>
                 );
             })}
+            </AnimatePresence>
 
             <div ref={bottomRef} />
 
@@ -115,7 +126,7 @@ const MessageList = ({ messages, loading, error, otherUser }) => {
                     onClick={jumpToBottom}
                     aria-label="Scroll to latest messages"
                 >
-                    ↓
+                    <ArrowDown size={18} strokeWidth={2} />
                 </button>
             ) : null}
         </div>

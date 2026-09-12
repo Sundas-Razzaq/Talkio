@@ -1,8 +1,16 @@
+import { ArrowLeft } from "lucide-react";
+import { motion } from "framer-motion";
+
 const ChatHeader = ({ user, typing, onBack }) => {
     if (!user) return null;
 
     return (
-        <header className="chat-header">
+        <motion.header
+            className="chat-header"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+        >
             {onBack ? (
                 <button
                     type="button"
@@ -10,7 +18,7 @@ const ChatHeader = ({ user, typing, onBack }) => {
                     onClick={onBack}
                     aria-label="Back to conversations"
                 >
-                    ←
+                    <ArrowLeft size={19} strokeWidth={1.8} />
                 </button>
             ) : null}
 
@@ -39,7 +47,7 @@ const ChatHeader = ({ user, typing, onBack }) => {
                     <p className="chat-header__status">Available</p>
                 )}
             </div>
-        </header>
+        </motion.header>
     );
 };
 

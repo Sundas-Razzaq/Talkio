@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
+import { MessageCircle, Users, Zap } from "lucide-react";
+import { motion } from "framer-motion";
 import logo from "../../assets/logo.png";
 const LandingPage = () => {
     return (
-        <main className="landing-page">
+        <motion.main
+            className="landing-page"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+        >
             {/* Navigation */}
             <header className="landing-header">
                 <div className="landing-container landing-header__inner">
@@ -34,7 +41,12 @@ const LandingPage = () => {
             {/* Hero */}
             <section className="landing-hero">
                 <div className="landing-container landing-hero__content">
-                    <div className="landing-hero__text">
+                    <motion.div
+                        className="landing-hero__text"
+                        initial={{ opacity: 0, y: 18 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.45, delay: 0.08, ease: "easeOut" }}
+                    >
                         <p className="landing-eyebrow">
                             Simple. Personal. Real-time.
                         </p>
@@ -63,9 +75,15 @@ const LandingPage = () => {
                                 Login
                             </Link>
                         </div>
-                    </div>
+                    </motion.div>
 
-                    <div className="landing-hero__visual" aria-hidden="true">
+                    <motion.div
+                        className="landing-hero__visual"
+                        aria-hidden="true"
+                        initial={{ opacity: 0, scale: 0.96, y: 12 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.18, ease: "easeOut" }}
+                    >
                         <div className="landing-chat-preview">
                             <div className="landing-chat-preview__header">
                                 <div className="landing-avatar" />
@@ -98,7 +116,7 @@ const LandingPage = () => {
                                 <span>Write a message...</span>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </section>
 
@@ -118,10 +136,24 @@ const LandingPage = () => {
                         </p>
                     </div>
 
-                    <div className="landing-features__grid">
-                        <article className="landing-feature-card">
+                    <motion.div
+                        className="landing-features__grid"
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.2 }}
+                        variants={{
+                            hidden: {},
+                            visible: { transition: { staggerChildren: 0.08 } },
+                        }}
+                    >
+                        <motion.article
+                            className="landing-feature-card"
+                            variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0 } }}
+                            whileHover={{ y: -4 }}
+                            transition={{ duration: 0.2 }}
+                        >
                             <div className="landing-feature-card__icon">
-                                💬
+                                <MessageCircle size={22} strokeWidth={1.8} />
                             </div>
 
                             <h3 className="landing-feature-card__title">
@@ -131,11 +163,16 @@ const LandingPage = () => {
                             <p className="landing-feature-card__description">
                                 Start one-to-one conversations with people you connect with.
                             </p>
-                        </article>
+                        </motion.article>
 
-                        <article className="landing-feature-card">
+                        <motion.article
+                            className="landing-feature-card"
+                            variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0 } }}
+                            whileHover={{ y: -4 }}
+                            transition={{ duration: 0.2 }}
+                        >
                             <div className="landing-feature-card__icon">
-                                ⚡
+                                <Zap size={22} strokeWidth={1.8} />
                             </div>
 
                             <h3 className="landing-feature-card__title">
@@ -146,11 +183,16 @@ const LandingPage = () => {
                                 Send and receive messages instantly through real-time
                                 communication.
                             </p>
-                        </article>
+                        </motion.article>
 
-                        <article className="landing-feature-card">
+                        <motion.article
+                            className="landing-feature-card"
+                            variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0 } }}
+                            whileHover={{ y: -4 }}
+                            transition={{ duration: 0.2 }}
+                        >
                             <div className="landing-feature-card__icon">
-                                👥
+                                <Users size={22} strokeWidth={1.8} />
                             </div>
 
                             <h3 className="landing-feature-card__title">
@@ -161,8 +203,8 @@ const LandingPage = () => {
                                 Find friends, manage connections, and keep your conversations
                                 in one place.
                             </p>
-                        </article>
-                    </div>
+                        </motion.article>
+                    </motion.div>
                 </div>
             </section>
 
@@ -206,7 +248,7 @@ const LandingPage = () => {
                     </p>
                 </div>
             </footer>
-        </main>
+        </motion.main>
     );
 };
 

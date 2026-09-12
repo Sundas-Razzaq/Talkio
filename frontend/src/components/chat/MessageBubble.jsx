@@ -1,3 +1,6 @@
+import { Check, CheckCheck } from "lucide-react";
+import { motion } from "framer-motion";
+
 const formatTime = (isoString) => {
     if (!isoString) return "";
 
@@ -29,13 +32,16 @@ const MessageBubble = ({ message, isOwn, otherUserId }) => {
         (isReadByOther ? " message-bubble__ticks--read" : "");
 
     return (
-        <div
+        <motion.div
             className={
                 "message-bubble" +
                 (isOwn
                     ? " message-bubble--own"
                     : " message-bubble--other")
             }
+            initial={{ opacity: 0, y: 7, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
         >
             <p className="message-bubble__content">
                 {message.content}
@@ -50,11 +56,15 @@ const MessageBubble = ({ message, isOwn, otherUserId }) => {
                             isReadByOther ? "Read" : "Sent"
                         }
                     >
-                        {isReadByOther ? "✓✓" : "✓"}
+                        {isReadByOther ? (
+                            <CheckCheck size={13} strokeWidth={2.2} />
+                        ) : (
+                            <Check size={13} strokeWidth={2.2} />
+                        )}
                     </span>
                 ) : null}
             </span>
-        </div>
+        </motion.div>
     );
 };
 
