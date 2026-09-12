@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 import { useAuth } from "../../hooks/useAuth.js";
 import { searchUserByEmail } from "../../api/userApi.js";
+import { getOrCreateConversation } from "../../api/conversationApi.js";
 import {
     getFriends,
     getFriendRequests,
@@ -14,8 +15,16 @@ import UserSearch from "../friends/UserSearch.jsx";
 import SidebarTabs from "../friends/SideBarTabs.jsx";
 import FriendsList from "../friends/FriendList.jsx";
 import RequestsList from "../friends/FriendRequestList.jsx";
+import ConversationList from "../conversation/ConversationList.jsx";
 
-const ChatSidebar = () => {
+const ChatSidebar = ({
+    conversations,
+    conversationsLoading,
+    selectedConversationId,
+    onSelectConversation,
+    onConversationCreated,
+    onRefreshConversations,
+}) => {
     const { user } = useAuth();
 
     // Sidebar mode
@@ -34,6 +43,9 @@ const ChatSidebar = () => {
     const [requests, setRequests] = useState([]);
     const [requestsLoading, setRequestsLoading] = useState(true);
     const [respondingId, setRespondingId] = useState(null);
+
+    // Per-friend starting state (prevents double clicks)
+    const [startingFriendId, setStartingFriendId] = useState(null);
 
     const isSearching = searchStatus !== "idle" || query.trim() !== "";
 
@@ -127,7 +139,6 @@ const ChatSidebar = () => {
 
     const handleSendRequest = async (recipientId) => {
         await sendFriendRequest(recipientId);
-        // No visible list change yet; the backend guards duplicates.
     };
 
     const handleAcceptFromSearch = async (requesterId) => {
@@ -163,9 +174,26 @@ const ChatSidebar = () => {
         }
     };
 
-    const handleSelectFriend = (friend) => {
-        // Phase 4 will start/open the conversation here.
-        toast.info(`Conversation with ${friend.name} comes in Phase 4`);
+    const handleSelectFriend = async (friend) => {
+        if (startingFriendId) return;
+
+        try {
+            setStartingFriendId(friend._id);
+
+            const { data } = await getOrCreateConversation(friend._id);
+
+            onConversationCreated?.(data.conversation);
+            await onRefreshConversations?.();
+
+            setActiveTab("chats");
+        } catch (error) {
+            const message =
+                error?.response?.data?.message ||
+                "Could not start conversation";
+            toast.error(message);
+        } finally {
+            setStartingFriendId(null);
+        }
     };
 
     return (
@@ -239,33 +267,18 @@ const ChatSidebar = () => {
                         onAcceptRequest={handleAcceptFromSearch}
                     />
                 ) : activeTab === "chats" ? (
-                    <>
-                        <header className="chat-sidebar__section-header">
-                            <h2 className="chat-sidebar__section-title">
-                                Chats
-                            </h2>
-                        </header>
-
-                        <div className="chat-sidebar__empty">
-                            <div className="chat-sidebar__empty-icon">
-                                <span>💬</span>
-                            </div>
-
-                            <h3 className="chat-sidebar__empty-title">
-                                No conversations yet
-                            </h3>
-
-                            <p className="chat-sidebar__empty-description">
-                                Search for a friend above to start your
-                                first conversation.
-                            </p>
-                        </div>
-                    </>
+                    <ConversationList
+                        conversations={conversations}
+                        loading={conversationsLoading}
+                        selectedConversationId={selectedConversationId}
+                        onSelectConversation={onSelectConversation}
+                    />
                 ) : activeTab === "friends" ? (
                     <FriendsList
                         friends={friends}
                         loading={friendsLoading}
                         onSelectFriend={handleSelectFriend}
+                        startingFriendId={startingFriendId}
                     />
                 ) : (
                     <RequestsList

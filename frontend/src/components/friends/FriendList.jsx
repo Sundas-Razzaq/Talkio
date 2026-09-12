@@ -1,6 +1,11 @@
 import FriendCard from "./FriendCard.jsx";
 
-const FriendsList = ({ friends, loading, onSelectFriend }) => {
+const FriendsList = ({
+    friends,
+    loading,
+    onSelectFriend,
+    startingFriendId,
+}) => {
     if (loading) {
         return (
             <div className="friends-list friends-list--loading">
@@ -24,15 +29,26 @@ const FriendsList = ({ friends, loading, onSelectFriend }) => {
 
     return (
         <ul className="friends-list">
-            {friends.map((friend) => (
-                <li key={friend._id} className="friends-list__item">
-                    <FriendCard
-                        user={friend}
-                        clickable
-                        onClick={onSelectFriend}
-                    />
-                </li>
-            ))}
+            {friends.map((friend) => {
+                const isStarting = startingFriendId === friend._id;
+
+                return (
+                    <li key={friend._id} className="friends-list__item">
+                        <FriendCard
+                            user={friend}
+                            clickable={!isStarting}
+                            onClick={onSelectFriend}
+                            actionSlot={
+                                isStarting ? (
+                                    <span className="friend-card__starting">
+                                        Starting…
+                                    </span>
+                                ) : null
+                            }
+                        />
+                    </li>
+                );
+            })}
         </ul>
     );
 };
