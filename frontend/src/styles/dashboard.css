@@ -60,13 +60,6 @@
     overflow: hidden;
 }
 
-.chat-area__messages {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
 .chat-area--empty {
     align-items: center;
     justify-content: center;
@@ -78,9 +71,15 @@
         grid-template-columns: 1fr;
     }
 
-    /* On mobile we'll later hide one side or the other via state.
-       For 8a, just collapse to single column. */
+    .chat-dashboard--view-sidebar .chat-area {
+        display: none;
+    }
+
+    .chat-dashboard--view-chat .chat-sidebar {
+        display: none;
+    }
 }
+
 
 /* ============================================================
    Talkio dashboard — layout shell (Phase 8a)
@@ -140,12 +139,7 @@
     overflow: hidden;
 }
 
-.chat-area__messages {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
+
 
 .chat-area--empty {
     align-items: center;

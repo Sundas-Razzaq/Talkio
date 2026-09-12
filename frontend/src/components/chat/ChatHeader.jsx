@@ -1,8 +1,19 @@
-const ChatHeader = ({ user, typing }) => {
+const ChatHeader = ({ user, typing, onBack }) => {
     if (!user) return null;
 
     return (
         <header className="chat-header">
+            {onBack ? (
+                <button
+                    type="button"
+                    className="chat-header__back"
+                    onClick={onBack}
+                    aria-label="Back to conversations"
+                >
+                    ←
+                </button>
+            ) : null}
+
             <div className="chat-header__avatar">
                 {user.profilePicture?.url ? (
                     <img

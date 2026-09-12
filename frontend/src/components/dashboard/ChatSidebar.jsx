@@ -24,6 +24,7 @@ const ChatSidebar = ({
     onSelectConversation,
     onConversationCreated,
     onRefreshConversations,
+    unreadCount = 0,
 }) => {
     const { user } = useAuth();
 
@@ -257,6 +258,7 @@ const ChatSidebar = ({
                 <SidebarTabs
                     activeTab={activeTab}
                     onChange={setActiveTab}
+                    chatCount={unreadCount}
                     requestCount={requests.length}
                 />
             )}

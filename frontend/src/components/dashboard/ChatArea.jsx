@@ -5,11 +5,12 @@ import { useAuth } from "../../hooks/useAuth.js";
 import { getOtherParticipant } from "../../utils/conversationHelpers.js";
 import { getMessages } from "../../api/conversationApi.js";
 import { useSocket } from "../../hooks/useSocket.js";
+
 import ChatHeader from "../chat/ChatHeader.jsx";
 import MessageList from "../chat/MessageList.jsx";
 import MessageComposer from "../chat/MessageComposer.jsx";
 
-const ChatArea = ({ conversation }) => {
+const ChatArea = ({ conversation, onBack }) => {
     const { user } = useAuth();
     const { socket, connected } = useSocket();
 
@@ -18,7 +19,6 @@ const ChatArea = ({ conversation }) => {
     const [messagesError, setMessagesError] = useState("");
 
     const [otherTyping, setOtherTyping] = useState(false);
-    const [typingConversationId, setTypingConversationId] = useState(null);
     const [sending, setSending] = useState(false);
 
     const conversationId = conversation?._id || null;
@@ -125,8 +125,6 @@ const ChatArea = ({ conversation }) => {
                 return [...prev, message];
             });
 
-            // If the message came from the other user and we're on
-            // the tab, mark it as read.
             const senderId =
                 typeof message.sender === "object"
                     ? message.sender?._id
@@ -143,7 +141,6 @@ const ChatArea = ({ conversation }) => {
         const handleUserTyping = ({ conversationId: cid, userId }) => {
             if (cid !== conversationId) return;
             if (userId?.toString() === user?._id?.toString()) return;
-            setTypingConversationId(cid);
             setOtherTyping(true);
         };
 
@@ -153,17 +150,20 @@ const ChatArea = ({ conversation }) => {
         }) => {
             if (cid !== conversationId) return;
             if (userId?.toString() === user?._id?.toString()) return;
-            setTypingConversationId(null);
             setOtherTyping(false);
         };
 
-        const handleMessagesRead = ({ conversationId: cid, userId }) => {
+        const handleMessagesRead = ({
+            conversationId: cid,
+            userId,
+        }) => {
             if (cid !== conversationId) return;
 
             setMessages((prev) =>
                 prev.map((m) => {
                     const alreadyRead = m.readBy?.some(
-                        (id) => id?.toString() === userId?.toString()
+                        (id) =>
+                            id?.toString() === userId?.toString()
                     );
                     if (alreadyRead) return m;
                     return {
@@ -182,7 +182,10 @@ const ChatArea = ({ conversation }) => {
         return () => {
             socket.off("new_message", handleNewMessage);
             socket.off("user_typing", handleUserTyping);
-            socket.off("user_stopped_typing", handleUserStoppedTyping);
+            socket.off(
+                "user_stopped_typing",
+                handleUserStoppedTyping
+            );
             socket.off("messages_read", handleMessagesRead);
         };
     }, [socket, conversationId, user?._id, markAsRead]);
@@ -193,7 +196,9 @@ const ChatArea = ({ conversation }) => {
     const handleSend = useCallback(
         (content) => {
             if (!socket || !connected || !conversationId) {
-                toast.error("Not connected. Please wait a moment.");
+                toast.error(
+                    "Not connected. Please wait a moment."
+                );
                 return;
             }
 
@@ -207,7 +212,8 @@ const ChatArea = ({ conversation }) => {
 
                     if (!res?.success) {
                         toast.error(
-                            res?.message || "Could not send message"
+                            res?.message ||
+                            "Could not send message"
                         );
                         return;
                     }
@@ -265,9 +271,8 @@ const ChatArea = ({ conversation }) => {
         <section className="chat-area">
             <ChatHeader
                 user={otherUser}
-                typing={
-                    otherTyping && typingConversationId === conversationId
-                }
+                typing={otherTyping}
+                onBack={onBack}
             />
 
             <div className="chat-area__messages">

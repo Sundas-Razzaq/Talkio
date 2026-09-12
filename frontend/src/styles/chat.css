@@ -65,6 +65,31 @@
     flex: 0 0 auto;
 }
 
+.chat-header__back {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--talkio-radius-full);
+    color: var(--talkio-text-muted);
+    font-size: var(--talkio-font-size-lg);
+    flex: 0 0 auto;
+    transition: background-color var(--talkio-transition-fast),
+        color var(--talkio-transition-fast);
+}
+
+.chat-header__back:hover {
+    background-color: var(--talkio-surface-2);
+    color: var(--talkio-text);
+}
+
+@media (max-width: 768px) {
+    .chat-header__back {
+        display: inline-flex;
+    }
+}
+
 .chat-header__avatar {
     flex: 0 0 auto;
     width: 40px;
@@ -154,9 +179,24 @@
 /* ============================================================
    Messages container
    ============================================================ */
-
 .chat-area__messages {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
     padding: var(--talkio-space-6) var(--talkio-space-6) var(--talkio-space-4);
+    overflow: hidden;
+}
+
+/* The message list is now the scrolling container — not the
+   parent. The jump-to-bottom button positions against it. */
+.chat-area__messages .message-list {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /* ============================================================
@@ -279,6 +319,18 @@
 .message-bubble--other .message-bubble__time {
     color: var(--talkio-text-dim);
 }
+.message-bubble__ticks {
+    margin-left: 6px;
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: -1px;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.message-bubble__ticks--read {
+    color: var(--talkio-accent);
+    letter-spacing: -2px;
+}
 
 /* Clear the float so it doesn't affect the next sibling or the
    bubble's own height computation. */
@@ -286,6 +338,32 @@
     content: "";
     display: block;
     clear: both;
+}
+.message-list__jump {
+    position: sticky;
+    bottom: 12px;
+    align-self: flex-end;
+    margin-left: auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--talkio-text);
+    background-color: var(--talkio-surface-3);
+    border: 1px solid var(--talkio-border);
+    box-shadow: var(--talkio-shadow-md);
+    cursor: pointer;
+    transition: background-color var(--talkio-transition-fast),
+        transform var(--talkio-transition-fast);
+}
+
+.message-list__jump:hover {
+    background-color: var(--talkio-surface-hover);
+    transform: translateY(-1px);
 }
 
 /* ============================================================

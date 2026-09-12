@@ -1,6 +1,15 @@
-const SidebarTabs = ({ activeTab, onChange, requestCount }) => {
+const SidebarTabs = ({
+    activeTab,
+    onChange,
+    chatCount = 0,
+    requestCount = 0,
+}) => {
     const tabs = [
-        { id: "chats", label: "Chats" },
+        {
+            id: "chats",
+            label: "Chats",
+            badge: chatCount > 0 ? chatCount : null,
+        },
         { id: "friends", label: "Friends" },
         {
             id: "requests",
@@ -22,7 +31,9 @@ const SidebarTabs = ({ activeTab, onChange, requestCount }) => {
                             : "")
                     }
                     onClick={() => onChange(tab.id)}
-                    aria-current={activeTab === tab.id ? "page" : undefined}
+                    aria-current={
+                        activeTab === tab.id ? "page" : undefined
+                    }
                 >
                     <span className="sidebar-tabs__label">
                         {tab.label}
