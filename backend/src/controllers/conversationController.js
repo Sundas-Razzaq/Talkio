@@ -89,6 +89,7 @@ export const getOrCreateConversation = asyncHandler(
 );
 
 // Get all conversations for the current user
+// Get all conversations for the current user
 export const getConversations = asyncHandler(
     async (req, res) => {
         const userId = req.user._id;
@@ -109,9 +110,54 @@ export const getConversations = asyncHandler(
                 updatedAt: -1,
             });
 
+        // ---- Unread counts (single aggregation) ----
+        const conversationIds = conversations.map((c) => c._id);
+
+        let unreadCountsMap = new Map();
+
+        if (conversationIds.length > 0) {
+            const unreadAggregation = await Message.aggregate([
+                {
+                    $match: {
+                        conversation: { $in: conversationIds },
+                        readBy: { $ne: userId },
+                    },
+                },
+                {
+                    $group: {
+                        _id: "$conversation",
+                        count: { $sum: 1 },
+                    },
+                },
+            ]);
+
+            unreadCountsMap = new Map(
+                unreadAggregation.map((row) => [
+                    row._id.toString(),
+                    row.count,
+                ])
+            );
+        }
+
+        const conversationsWithUnread = conversations.map(
+            (conversation) => {
+                const unreadCount =
+                    unreadCountsMap.get(
+                        conversation._id.toString()
+                    ) || 0;
+
+                // conversation is a Mongoose doc; spread its JSON
+                // and add the unreadCount field.
+                return {
+                    ...conversation.toObject(),
+                    unreadCount,
+                };
+            }
+        );
+
         return res.status(200).json({
             success: true,
-            conversations,
+            conversations: conversationsWithUnread,
         });
     }
 );

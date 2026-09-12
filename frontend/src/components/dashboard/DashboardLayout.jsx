@@ -19,12 +19,6 @@ const DashboardLayout = () => {
         useState(null);
     const [mobileView, setMobileView] = useState("sidebar");
 
-    // Session-only "seen" set — ids of conversations the user has
-    // opened in this browser session.
-    const [seenConversationIds, setSeenConversationIds] = useState(
-        () => new Set()
-    );
-
     const refreshConversations = useCallback(async () => {
         setConversationsLoading(true);
 
@@ -47,38 +41,31 @@ const DashboardLayout = () => {
         queueMicrotask(refreshConversations);
     }, [refreshConversations]);
 
+    // Total unread messages across all conversations (capped at 99)
     const unreadCount = useMemo(() => {
         if (!userId) return 0;
 
-        return conversations.filter((conversation) => {
-            if (seenConversationIds.has(conversation._id)) {
-                return false;
-            }
+        const sum = conversations.reduce(
+            (acc, conversation) =>
+                acc + (conversation.unreadCount || 0),
+            0
+        );
 
-            const senderId = conversation.lastMessage?.sender;
-            if (!senderId) return false;
-
-            const normalizedSender =
-                typeof senderId === "object"
-                    ? senderId?._id
-                    : senderId;
-
-            return (
-                normalizedSender?.toString() !== userId.toString()
-            );
-        }).length;
-    }, [conversations, seenConversationIds, userId]);
+        return sum > 99 ? 99 : sum;
+    }, [conversations, userId]);
 
     const handleSelectConversation = (conversation) => {
         setSelectedConversation(conversation);
         setMobileView("chat");
 
-        setSeenConversationIds((prev) => {
-            if (prev.has(conversation._id)) return prev;
-            const next = new Set(prev);
-            next.add(conversation._id);
-            return next;
-        });
+        // Optimistically clear unreadCount on the selected conversation
+        setConversations((prev) =>
+            prev.map((c) =>
+                c._id === conversation._id
+                    ? { ...c, unreadCount: 0 }
+                    : c
+            )
+        );
     };
 
     const handleConversationCreated = (conversation) => {
@@ -99,13 +86,6 @@ const DashboardLayout = () => {
 
         setSelectedConversation(conversation);
         setMobileView("chat");
-
-        setSeenConversationIds((prev) => {
-            if (prev.has(conversation._id)) return prev;
-            const next = new Set(prev);
-            next.add(conversation._id);
-            return next;
-        });
     };
 
     return (

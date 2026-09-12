@@ -367,6 +367,42 @@
     transition: background-color var(--talkio-transition-fast);
 }
 
+/* Unread badge on the conversation row */
+
+.conversation-row__badge {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 7px;
+    border-radius: var(--talkio-radius-full);
+    background: var(--talkio-primary-gradient);
+    color: var(--talkio-text-on-primary);
+    font-size: var(--talkio-font-size-xs);
+    font-weight: var(--talkio-weight-semibold);
+    line-height: 1;
+    box-shadow: 0 2px 8px rgba(124, 92, 255, 0.35);
+}
+
+/* Unread conversation row: name + preview go bold, preview in
+   normal text color instead of muted */
+
+.conversation-row--unread .conversation-row__name {
+    font-weight: var(--talkio-weight-bold);
+}
+
+.conversation-row--unread .conversation-row__preview {
+    color: var(--talkio-text);
+    font-weight: var(--talkio-weight-medium);
+}
+
+/* Keep selected rows looking selected even when unread */
+
+.conversation-row--selected .conversation-row__badge {
+    display: none;
+}
 .conversation-row:hover {
     background-color: var(--talkio-surface-hover);
 }

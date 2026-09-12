@@ -1,6 +1,11 @@
 import { useAuth } from "../../hooks/useAuth.js";
 import { getOtherParticipant } from "../../utils/conversationHelpers.js";
 
+const formatUnreadCount = (count) => {
+    if (!count || count <= 0) return null;
+    return count > 99 ? "99+" : String(count);
+};
+
 const ConversationList = ({
     conversations,
     loading,
@@ -55,6 +60,13 @@ const ConversationList = ({
                     ? conversation.lastMessage.content
                     : "No messages yet";
 
+                const unreadBadge = formatUnreadCount(
+                    conversation.unreadCount
+                );
+
+                const isUnread =
+                    unreadBadge !== null && !isSelected;
+
                 return (
                     <li
                         key={conversation._id}
@@ -66,6 +78,9 @@ const ConversationList = ({
                                 "conversation-row" +
                                 (isSelected
                                     ? " conversation-row--selected"
+                                    : "") +
+                                (isUnread
+                                    ? " conversation-row--unread"
                                     : "")
                             }
                             onClick={() =>
@@ -97,6 +112,12 @@ const ConversationList = ({
                                     {preview}
                                 </p>
                             </div>
+
+                            {unreadBadge ? (
+                                <span className="conversation-row__badge">
+                                    {unreadBadge}
+                                </span>
+                            ) : null}
                         </button>
                     </li>
                 );

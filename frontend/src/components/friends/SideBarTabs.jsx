@@ -18,6 +18,7 @@ const SidebarTabs = ({
         },
     ];
 
+
     return (
         <nav className="sidebar-tabs" aria-label="Sidebar sections">
             {tabs.map((tab) => (
