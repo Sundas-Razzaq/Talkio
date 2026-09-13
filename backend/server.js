@@ -8,9 +8,6 @@ import socketHandler from "./src/socket/socketHandler.js";
 
 dotenv.config();
 
-// Connect DB
-await connectDB();
-
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -22,6 +19,13 @@ const io = new Server(server, {
 });
 
 socketHandler(io);
+
+// Force connection + log error
+try {
+  await connectDB();
+} catch (err) {
+  console.error("Failed to connect on startup:", err.message);
+}
 
 export default server;
 
