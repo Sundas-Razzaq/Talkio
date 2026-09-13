@@ -28,7 +28,7 @@ export function SocketProvider({ children }) {
 
         const instance = io(SOCKET_URL, {
             auth: { token },
-            transports: ["websocket", "polling"],
+            transports: ["websocket"],
             withCredentials: true,
         });
 
