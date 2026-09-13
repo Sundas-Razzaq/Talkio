@@ -8,6 +8,9 @@ import socketHandler from "./src/socket/socketHandler.js";
 
 dotenv.config();
 
+// Connect DB
+await connectDB();
+
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -20,12 +23,8 @@ const io = new Server(server, {
 
 socketHandler(io);
 
-// Connect DB before exporting (important for Vercel)
-await connectDB();
-
 export default server;
 
-// Only listen locally
 if (!process.env.VERCEL) {
   const PORT = process.env.PORT || 5000;
   server.listen(PORT, () => {
