@@ -7,7 +7,6 @@ import connectDB from "./src/config/db.js";
 import socketHandler from "./src/socket/socketHandler.js";
 
 dotenv.config();
-connectDB();
 
 const server = http.createServer(app);
 
@@ -21,7 +20,9 @@ const io = new Server(server, {
 
 socketHandler(io);
 
-// Export for Vercel
+// Connect DB before exporting (important for Vercel)
+await connectDB();
+
 export default server;
 
 // Only listen locally
