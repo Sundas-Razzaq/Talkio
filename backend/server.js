@@ -13,7 +13,10 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || "*",
+    origin: [
+      "https://talkio-chat-cctyhkaa8-sundas-razzaq.vercel.app",
+      "http://localhost:5173"
+    ],
     credentials: true,
   },
   path: "/socket.io",
