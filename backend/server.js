@@ -18,17 +18,24 @@ const server = http.createServer(app);
 
 // Create Socket.IO server
 const io = new Server(server, {
-    cors: {
-        origin:
-            process.env.FRONTEND_URL ||
-            "http://localhost:5173",
-        credentials: true,
-    },
+  cors: {
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    credentials: true,
+  },
+  // Important for Vercel
+  path: "/socket.io",
+  transports: ["websocket", "polling"],
 });
 
 // Socket.IO handlers
 socketHandler(io);
 
-server.listen(PORT, () => {
+// Export the server for Vercel
+export default server;
+
+// Only listen when running locally (not on Vercel)
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+  server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-});
+  });
+}

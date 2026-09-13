@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
     res.status(200).json({
         success: true,
-        message: "reuseable API Running",
+        message: "Talkio Backend Running",
     });
 });
 
