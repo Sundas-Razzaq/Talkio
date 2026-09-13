@@ -7,34 +7,26 @@ import connectDB from "./src/config/db.js";
 import socketHandler from "./src/socket/socketHandler.js";
 
 dotenv.config();
-
-// Connect Database
 connectDB();
 
-const PORT = process.env.PORT || 5000;
-
-// Create HTTP server
 const server = http.createServer(app);
 
-// Create Socket.IO server
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: process.env.FRONTEND_URL || "*",
     credentials: true,
   },
-  // Important for Vercel
   path: "/socket.io",
-  transports: ["websocket", "polling"],
 });
 
-// Socket.IO handlers
 socketHandler(io);
 
-// Export the server for Vercel
+// Export for Vercel
 export default server;
 
-// Only listen when running locally (not on Vercel)
-if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+// Only listen locally
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
   server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
