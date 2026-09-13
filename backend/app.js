@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -18,6 +19,19 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get("/api/test-db", async (req, res) => {
+    try {
+        res.json({
+            mongoUriExists: !!process.env.MONGO_URI,
+            readyState: mongoose.connection.readyState, // 0=disconnected, 1=connected
+            readyStateText: ["disconnected", "connected", "connecting", "disconnecting"][mongoose.connection.readyState] || "unknown",
+            host: mongoose.connection.host || null,
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 
 // Test Route
 app.get("/", (req, res) => {
