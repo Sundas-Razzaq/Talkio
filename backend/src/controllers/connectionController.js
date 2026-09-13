@@ -1,7 +1,7 @@
 import Connection from "../models/connection.js";
 import User from "../models/user.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import ApiError from "../utils/apiError.js";
+import ApiError from "../utils/apierror.js";
 import sendEmail, { invitationTemplate } from "../utils/sendEmail.js";
 import Invitation from "../models/invitation.js";
 

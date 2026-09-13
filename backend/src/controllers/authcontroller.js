@@ -3,7 +3,7 @@ import crypto from "crypto";
 import User from "../models/user.js";
 import generateToken from "../utils/generateTokens.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import ApiError from "../utils/apiError.js";
+import ApiError from "../utils/apierror.js";
 import sendEmail, { passwordResetTemplate } from "../utils/sendEmail.js";
 import Invitation from "../models/invitation.js";
 import Connection from "../models/connection.js";

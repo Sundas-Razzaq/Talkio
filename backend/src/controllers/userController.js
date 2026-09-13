@@ -1,7 +1,7 @@
 import { validationResult } from "express-validator";
 import User from "../models/user.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import ApiError from "../utils/apiError.js";
+import ApiError from "../utils/apierror.js";
 import { uploadImage, deleteImage } from "../services/cloudinaryService.js";
 
 // Get user profile

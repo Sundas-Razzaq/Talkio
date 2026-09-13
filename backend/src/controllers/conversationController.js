@@ -2,7 +2,7 @@ import Conversation from "../models/conversation.js";
 import Connection from "../models/connection.js";
 import User from "../models/user.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import ApiError from "../utils/apiError.js";
+import ApiError from "../utils/apierror.js";
 import Message from "../models/message.js";
 
 const createParticipantKey = (userId1, userId2) => {
