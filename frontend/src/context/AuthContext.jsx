@@ -4,7 +4,7 @@ import {
     loginUser,
     logoutUser,
     registerUser,
-} from "../api/authApi.js";
+} from "../api/authAPI.js";
 import { AuthContext } from "./authContext.js";
 import {
     clearAuthSession,

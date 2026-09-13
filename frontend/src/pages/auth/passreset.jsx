@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import AuthPageShell from "../../components/auth/authPageShell.jsx";
-import { resetPassword } from "../../api/authApi.js";
+import { resetPassword } from "../../api/authAPI.js";
 import {
     resolveErrorMessage,
     setAuthSession,

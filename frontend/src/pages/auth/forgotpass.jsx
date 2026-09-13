@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import AuthPageShell from "../../components/auth/authPageShell.jsx";
-import { forgotPassword } from "../../api/authApi.js";
+import { forgotPassword } from "../../api/authAPI.js";
 import { resolveErrorMessage } from "../../utils/helpers.js";
 
 const ForgotPasswordPage = () => {
