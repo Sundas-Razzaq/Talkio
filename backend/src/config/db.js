@@ -14,7 +14,7 @@ const connectDB = async () => {
         return conn;
     } catch (error) {
         console.error("Database Connection Failed:", error.message);
-        throw error; // important — taake pata chale fail hua
+        throw error;
     }
 };
 
